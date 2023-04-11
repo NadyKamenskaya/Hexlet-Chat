@@ -1,18 +1,17 @@
-# develop:
-# 	npx webpack serve
+lint-frontend:
+	make -C frontend lint
 
 install:
 	npm ci
 
-# start-backend:
-# 	npm start
+start-frontend:
+	make -C frontend start
 
-# build:
-# 	rm -rf dist
-# 	NODE_ENV=production npx webpack
+start-backend:
+	npx start-server
 
-# publish:
-# 	npm publish --dry-run
+deploy:
+	git push heroku main
 
-# lint:
-# 	npx eslint .
+start:
+	make start-backend & make start-frontend
