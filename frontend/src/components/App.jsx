@@ -7,7 +7,7 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
+import { Button, Navbar } from 'react-bootstrap';
 import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
@@ -39,6 +39,16 @@ const ChatRoute = ({ children }) => {
   );
 };
 
+const AuthButton = () => {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn
+      ? <Button onClick={auth.logOut} variant="primary">Выйти</Button>
+      : null
+  );
+};
+
 const App = () => (
   <>
     <div className="d-flex flex-column h-100">
@@ -47,6 +57,7 @@ const App = () => (
           <Navbar className="shadow-sm" bg="white" expand="lg">
             <div className="container">
               <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+              <AuthButton />
             </div>
           </Navbar>
           <Routes>
