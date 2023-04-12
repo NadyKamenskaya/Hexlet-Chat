@@ -1,3 +1,6 @@
+import { Provider } from 'react-redux';
+import store from '../slices/index.js';
+
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -67,7 +70,9 @@ const App = () => (
               path="/"
               element={(
                 <ChatRoute>
-                  <ChatPage />
+                  <Provider store={store}>
+                    <ChatPage />
+                  </Provider>
                 </ChatRoute>
               )}
             />
