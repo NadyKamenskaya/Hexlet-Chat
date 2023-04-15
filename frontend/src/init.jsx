@@ -1,8 +1,8 @@
 import App from './components/App.jsx';
 
-const init = () => {
+const init = (socket) => {
   return (
-    <App />
+    <App socket={socket} />
   );
 };
 
