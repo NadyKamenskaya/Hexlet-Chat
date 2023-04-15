@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import { Button, Form, Card, Image, FloatingLabel } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
@@ -11,7 +12,6 @@ const schema = yup.object().shape({
   username: yup.string().required(),
   password: yup.string().required(),
 });
-
 
 const LoginPage = () => {
   const inputRef = useRef(null);
@@ -46,9 +46,11 @@ const LoginPage = () => {
                     navigate(from);
                   } catch (err) {
                     setSubmitting(false);
+
                     if (err.isAxiosError && err.response.status === 401) {
                       setAuthFailed(true);
                       inputRef.current.select();
+
                       return;
                     }
                     throw err;
@@ -66,9 +68,17 @@ const LoginPage = () => {
                   touched,
                   errors,
                 }) => (
-                  <Form noValidate onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+                  <Form
+                    noValidate
+                    onSubmit={handleSubmit}
+                    className="col-12 col-md-6 mt-3 mt-mb-0"
+                  >
                     <h1 className="text-center mb-4">Войти</h1>
-                    <FloatingLabel className="mb-3" htmlFor="username" label="Ваш ник">
+                    <FloatingLabel
+                      className="mb-3"
+                      htmlFor="username"
+                      label="Ваш ник"
+                    >
                       <Form.Control
                         ref={inputRef}
                         placeholder="Ваш ник"
@@ -78,25 +88,41 @@ const LoginPage = () => {
                         id="username"
                         onChange={handleChange}
                         value={values.username}
+                        isInvalid={authFailed}
                         isValid={touched.username && !errors.username}
                       />
                       </FloatingLabel>
-                      <FloatingLabel className="mb-4" htmlFor="password" label="Пароль">
+                      <FloatingLabel
+                        className="mb-4"
+                        htmlFor="password"
+                        label="Пароль"
+                      >
                       <Form.Control
                         placeholder="Пароль"
                         name="password"
                         autoComplete="current-password"
-                        isInvalid={authFailed}
                         required
                         id="password"
                         type="password"
                         onChange={handleChange}
                         value={values.password}
+                        isInvalid={authFailed}
                         isValid={touched.password && !errors.password}
                       />
-                      <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>
+                      <Form.Control.Feedback
+                        type="invalid"
+                        tooltip
+                      >
+                        Неверные имя пользователя или пароль
+                      </Form.Control.Feedback>
                     </FloatingLabel>
-                    <Button className="w-100 mb-3" variant="outline-primary" type="submit">Войти</Button>
+                    <Button
+                      className="w-100 mb-3"
+                      variant="outline-primary"
+                      type="submit"
+                    >
+                      Войти
+                    </Button>
                   </Form>
                 )}
               </Formik>

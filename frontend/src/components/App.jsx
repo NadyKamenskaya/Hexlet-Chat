@@ -1,6 +1,4 @@
 import { Provider } from 'react-redux';
-import store from '../slices/index.js';
-
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -11,6 +9,8 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
+
+import store from '../slices/index.js';
 import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
@@ -52,7 +52,7 @@ const AuthButton = () => {
   );
 };
 
-const App = () => (
+const App = ({ socket }) => (
   <>
     <div className="d-flex flex-column h-100">
       <AuthProvider>
@@ -71,7 +71,7 @@ const App = () => (
               element={(
                 <ChatRoute>
                   <Provider store={store}>
-                    <ChatPage />
+                    <ChatPage socket={socket} />
                   </Provider>
                 </ChatRoute>
               )}
