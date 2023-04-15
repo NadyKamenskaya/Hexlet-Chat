@@ -12,6 +12,7 @@ import { Button, Navbar } from 'react-bootstrap';
 
 import store from '../slices/index.js';
 import LoginPage from './LoginPage.jsx';
+import SignUpPage from './SignUpPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import AuthContext from '../contexts/index.jsx';
@@ -66,6 +67,7 @@ const App = ({ socket }) => (
           <Routes>
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage socket={socket} />} />
             <Route
               path="/"
               element={(
