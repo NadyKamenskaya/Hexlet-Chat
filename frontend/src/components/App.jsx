@@ -9,6 +9,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
+import { useTranslation } from "react-i18next";
 
 import store from '../slices/index.js';
 import LoginPage from './LoginPage.jsx';
@@ -53,37 +54,41 @@ const AuthButton = () => {
   );
 };
 
-const App = ({ socket }) => (
-  <>
-    <div className="d-flex flex-column h-100">
-      <AuthProvider>
-        <Router>
-          <Navbar className="shadow-sm" bg="white" expand="lg">
-            <div className="container">
-              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-              <AuthButton />
-            </div>
-          </Navbar>
-          <Routes>
-            <Route path="*" element={<NotFoundPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage socket={socket} />} />
-            <Route
-              path="/"
-              element={(
-                <ChatRoute>
-                  <Provider store={store}>
-                    <ChatPage socket={socket} />
-                  </Provider>
-                </ChatRoute>
-              )}
-            />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </div>
-    <div className="Toastify"></div>
-  </>
-);
+const App = ({ socket }) => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <div className="d-flex flex-column h-100">
+        <AuthProvider>
+          <Router>
+            <Navbar className="shadow-sm" bg="white" expand="lg">
+              <div className="container">
+                <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
+                <AuthButton />
+              </div>
+            </Navbar>
+            <Routes>
+              <Route path="*" element={<NotFoundPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage socket={socket} />} />
+              <Route
+                path="/"
+                element={(
+                  <ChatRoute>
+                    <Provider store={store}>
+                      <ChatPage socket={socket} />
+                    </Provider>
+                  </ChatRoute>
+                )}
+              />
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </div>
+      <div className="Toastify"></div>
+    </>
+  );
+};
 
 export default App;

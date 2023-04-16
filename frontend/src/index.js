@@ -3,10 +3,10 @@ import { io } from 'socket.io-client';
 
 import init from './init.jsx';
 
-const app = () => {
+const app = async () => {
   const socket = io();
   const root = createRoot(document.getElementById('chat'));
-  root.render(init(socket));
+  root.render(await init(socket));
 };
 
 app();
