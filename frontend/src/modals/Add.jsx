@@ -4,12 +4,15 @@ import * as yup from 'yup';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { actions } from '../slices/channelsSlice.js';
 import { selectors } from '../slices/channelsSlice.js';
 
 const Add = ({ props }) => {
   const { t } = useTranslation();
+  const notify = () => toast.success(t('notify.createdChannel'));
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
@@ -71,6 +74,7 @@ const Add = ({ props }) => {
                     dispatch(actions.changeChannel(payload.id));
                   });
                   setState(initialState);
+                  notify();
                 } catch (err) {
                   setSubmitting(false);
 

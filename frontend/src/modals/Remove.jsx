@@ -2,11 +2,14 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { actions } from '../slices/channelsSlice.js';
 
 const Remove = ({ props }) => {
   const { t } = useTranslation();
+  const notify = () => toast.success(t('notify.removedChannel'));
   const dispatch = useDispatch();
 
   const currentChannelId = useSelector((state) => {
@@ -26,6 +29,7 @@ const Remove = ({ props }) => {
       }
     });
     setState(initialState);
+    notify();
   };
 
   const onHide = (props) => () => {

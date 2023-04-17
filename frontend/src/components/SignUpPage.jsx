@@ -5,12 +5,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
+  const notify = () => toast.success(t('notify.error'));
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
@@ -65,6 +68,10 @@ const SignUpPage = () => {
                     navigate(from);
                   } catch (err) {
                     setSubmitting(false);
+
+                    if (err.isAxiosError) {
+                      notify();
+                    }
 
                     if (err.isAxiosError && err.response.status === 409) {
                       setAuthFailed(true);

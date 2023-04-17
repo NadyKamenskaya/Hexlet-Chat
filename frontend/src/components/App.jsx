@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
+import { ToastContainer } from 'react-toastify';
 
 import store from '../slices/index.js';
 import LoginPage from './LoginPage.jsx';
@@ -87,7 +88,7 @@ const App = ({ socket }) => {
           </Router>
         </AuthProvider>
       </div>
-      <div className="Toastify"></div>
+      <ToastContainer />
     </>
   );
 };

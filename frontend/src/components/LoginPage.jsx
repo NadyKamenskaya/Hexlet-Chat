@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
@@ -16,6 +18,7 @@ const schema = yup.object().shape({
 
 const LoginPage = () => {
   const { t } = useTranslation();
+  const notify = () => toast.success(t('notify.error'));
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
@@ -54,6 +57,7 @@ const LoginPage = () => {
                     setSubmitting(false);
 
                     if (err.isAxiosError && err.response.status === 401) {
+                      notify();
                       setAuthFailed(true);
                       inputRef.current.select();
 
