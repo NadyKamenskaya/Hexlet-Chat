@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Card, Image, FloatingLabel } from 'react-bootstrap';
+import {
+  Button, Form, Card, Image, FloatingLabel,
+} from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -59,9 +61,11 @@ const SignUpPage = () => {
                 validationSchema={schema}
                 onSubmit={async (values, { setSubmitting }) => {
                   setAuthFailed(false);
-    
+
                   try {
-                    const res = await axios.post(routes.signupPath(), { username: values.username, password: values.password });
+                    const res = await axios.post(routes.signupPath(), {
+                      username: values.username, password: values.password,
+                    });
                     localStorage.setItem('userId', JSON.stringify(res.data));
                     auth.logIn();
                     const { from } = location.state || { from: { pathname: '/' } };
@@ -69,11 +73,8 @@ const SignUpPage = () => {
                   } catch (err) {
                     setSubmitting(false);
 
-                    if (err.isAxiosError) {
-                      notify();
-                    }
-
                     if (err.isAxiosError && err.response.status === 409) {
+                      notify();
                       setAuthFailed(true);
                       inputRef.current.select();
 
@@ -125,12 +126,12 @@ const SignUpPage = () => {
                       >
                         {errors.username}
                       </Form.Control.Feedback>
-                      </FloatingLabel>
-                      <FloatingLabel
+                    </FloatingLabel>
+                    <FloatingLabel
                       className="mb-3"
                       htmlFor="password"
                       label={t('fields.password')}
-                      >
+                    >
                       <Form.Control
                         placeholder="Не менее 6 символов"
                         name="password"
@@ -150,12 +151,12 @@ const SignUpPage = () => {
                       >
                         {errors.password}
                       </Form.Control.Feedback>
-                      </FloatingLabel>
-                      <FloatingLabel
-                        className="mb-4"
-                        htmlFor="confirmPassword"
-                        label={t('errors.confirmPassword')}
-                      >
+                    </FloatingLabel>
+                    <FloatingLabel
+                      className="mb-4"
+                      htmlFor="confirmPassword"
+                      label={t('errors.confirmPassword')}
+                    >
                       <Form.Control
                         placeholder={t('errors.checkPassword')}
                         name="confirmPassword"

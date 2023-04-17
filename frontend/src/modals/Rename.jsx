@@ -3,12 +3,11 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { actions } from '../slices/channelsSlice.js';
-import { selectors } from '../slices/channelsSlice.js';
+import { actions, selectors } from '../slices/channelsSlice.js';
 
 const Rename = ({ props }) => {
   const { t } = useTranslation();
@@ -18,20 +17,21 @@ const Rename = ({ props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
-  const channels = useSelector(selectors.selectAll).reduce((acc, channel) => [...acc, channel.name], []);
+  const channels = useSelector(selectors.selectAll)
+    .reduce((acc, channel) => [...acc, channel.name], []);
 
   const schema = yup.object().shape({
     name: yup
       .string()
-      .required(t('erros.required'))
-      .min(3, t('erros.rangeLetter'))
-      .max(20, t('erros.rangeLetter'))
-      .notOneOf(channels, t('erros.notOneOf'))
+      .required(t('errors.required'))
+      .min(3, t('errors.rangeLetter'))
+      .max(20, t('errors.rangeLetter'))
+      .notOneOf(channels, t('errors.notOneOf')),
   });
 
   useEffect(() => {
     inputRef.current.select();
-  }, [dispatch])
+  }, [dispatch]);
 
   const onHide = (props) => () => {
     const { setState } = props;
@@ -43,12 +43,12 @@ const Rename = ({ props }) => {
 
   return (
     <>
-      <div className="fade modal-backdrop show"></div>
+      <div className="fade modal-backdrop show" />
       <div
         className="fade modal show"
         role="dialog"
         arai-modal="true"
-        style={{ display: "block" }}
+        style={{ display: 'block' }}
         tabIndex="-1"
       >
         <Modal.Dialog className="modal-dialog-centered">
@@ -64,7 +64,7 @@ const Rename = ({ props }) => {
             />
           </Modal.Header>
           <Modal.Body>
-          <Formik
+            <Formik
               validationSchema={schema}
               onSubmit={(values, { setSubmitting }) => {
                 const { initialState, setState, socket } = props;
@@ -103,7 +103,7 @@ const Rename = ({ props }) => {
                   <div>
                     <Form.Group>
                       <Form.Control
-                        className="mb-2" 
+                        className="mb-2"
                         ref={inputRef}
                         onChange={handleChange}
                         required

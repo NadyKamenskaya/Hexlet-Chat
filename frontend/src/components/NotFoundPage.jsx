@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const NotFoundPage = () => {
   const { t } = useTranslation();
@@ -13,7 +13,8 @@ const NotFoundPage = () => {
       />
       <h1 className="h4 text-muted">{t('ui.notFoundPage')}</h1>
       <p className="text-muted">
-        {t('ui.goTo')}<a href="/">{t('ui.mainPage')}</a>
+        {t('ui.goTo')}
+        <a href="/">{t('ui.mainPage')}</a>
       </p>
     </div>
   );

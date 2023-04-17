@@ -3,12 +3,11 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { actions } from '../slices/channelsSlice.js';
-import { selectors } from '../slices/channelsSlice.js';
+import { selectors, actions } from '../slices/channelsSlice.js';
 
 const Add = ({ props }) => {
   const { t } = useTranslation();
@@ -16,7 +15,8 @@ const Add = ({ props }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
-  const channels = useSelector(selectors.selectAll).reduce((acc, channel) => [...acc, channel.name], []);
+  const channels = useSelector(selectors.selectAll)
+    .reduce((acc, channel) => [...acc, channel.name], []);
 
   const schema = yup.object().shape({
     name: yup
@@ -24,12 +24,12 @@ const Add = ({ props }) => {
       .required(t('errors.required'))
       .min(3, t('errors.rangeLetter'))
       .max(20, t('errors.rangeLetter'))
-      .notOneOf(channels, t('errors.notOneOf'))
+      .notOneOf(channels, t('errors.notOneOf')),
   });
 
   useEffect(() => {
     inputRef.current.focus();
-  })
+  }, []);
 
   const onHide = (props) => () => {
     const { setState } = props;
@@ -41,12 +41,12 @@ const Add = ({ props }) => {
 
   return (
     <>
-      <div className="fade modal-backdrop show"></div>
+      <div className="fade modal-backdrop show" />
       <div
         className="fade modal show"
         role="dialog"
         arai-modal="true"
-        style={{ display: "block" }}
+        style={{ display: 'block' }}
         tabIndex="-1"
       >
         <Modal.Dialog className="modal-dialog-centered">
@@ -101,7 +101,7 @@ const Add = ({ props }) => {
                   <div>
                     <Form.Group>
                       <Form.Control
-                        className="mb-2" 
+                        className="mb-2"
                         ref={inputRef}
                         onChange={handleChange}
                         required

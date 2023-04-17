@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Card, Image, FloatingLabel } from 'react-bootstrap';
+import {
+  Button, Form, Card, Image, FloatingLabel,
+} from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,7 +48,7 @@ const LoginPage = () => {
                 validationSchema={schema}
                 onSubmit={async (values, { setSubmitting }) => {
                   setAuthFailed(false);
-    
+
                   try {
                     const res = await axios.post(routes.loginPath(), values);
                     localStorage.setItem('userId', JSON.stringify(res.data));
@@ -101,12 +103,12 @@ const LoginPage = () => {
                         isInvalid={authFailed}
                         isValid={touched.username && !errors.username}
                       />
-                      </FloatingLabel>
-                      <FloatingLabel
-                        className="mb-4"
-                        htmlFor="password"
-                        label={t('fields.password')}
-                      >
+                    </FloatingLabel>
+                    <FloatingLabel
+                      className="mb-4"
+                      htmlFor="password"
+                      label={t('fields.password')}
+                    >
                       <Form.Control
                         placeholder={t('fields.password')}
                         name="password"

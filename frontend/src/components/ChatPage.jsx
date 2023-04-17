@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useImmer } from 'use-immer';
 import { Formik } from 'formik';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 import Channels from './Channels.jsx';
 import Channel from './Channel.jsx';
@@ -88,8 +88,8 @@ const ChatPage = ({ socket }) => {
                 style={{ '--darkreader-inline-fill': 'currentColor' }}
                 data-darkreader-inline-fill=""
               >
-                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
               </svg>
               <span className="visually-hidden">+</span>
             </Button>
@@ -107,12 +107,13 @@ const ChatPage = ({ socket }) => {
             </div>
             <div className="mt-auto px-5 py-3">
               <Formik
-                onSubmit={values => {
+                onSubmit={(values) => {
                   const { username } = JSON.parse(localStorage.userId);
                   socket.emit('newMessage', { body: values.body, channelId: currentChannelId, username });
                   socket.on('newMessage', (payload) => {
                     dispatch(messagesActions.addMessage(payload));
                   });
+                  inputRef.current.value = '';
                 }}
                 initialValues={{
                   body: '',
@@ -136,7 +137,7 @@ const ChatPage = ({ socket }) => {
                         className="border-0 p-0 ps-2"
                         onChange={handleChange}
                         name="body"
-                        aria-label={t('fields.newMessage')}
+                        aria-label="new-message"
                         placeholder={t('fields.inputMessage')}
                         value={values.body}
                       />
@@ -155,7 +156,7 @@ const ChatPage = ({ socket }) => {
                           style={{ '--darkreader-inline-fill': 'currentColor' }}
                           data-darkreader-inline-fill=""
                         >
-                          <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
+                          <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
                         </svg>
                         <span className="visually-hidden">{t('buttons.submit')}</span>
                       </Button>
@@ -167,7 +168,9 @@ const ChatPage = ({ socket }) => {
           </div>
         </div>
       </div>
-      {renderModal({ initialState, state, setState, socket })}
+      {renderModal({
+        initialState, state, setState, socket,
+      })}
     </div>
   );
 };

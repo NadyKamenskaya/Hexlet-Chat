@@ -9,7 +9,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 
 import store from '../slices/index.js';

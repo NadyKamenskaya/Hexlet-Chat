@@ -1,12 +1,13 @@
 import React from 'react';
-import { Nav, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
+import {
+  Nav, Dropdown, ButtonGroup, Button,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 
-import { selectors } from '../slices/channelsSlice.js';
-import { actions } from '../slices/channelsSlice.js';
+import { selectors, actions } from '../slices/channelsSlice.js';
 
 const Channels = ({ props }) => {
   filter.loadDictionary('ru');
@@ -63,33 +64,32 @@ const Channels = ({ props }) => {
                 {filter.clean(channel.name)}
               </Button>
             )
-          : (
-            <Dropdown
-              as={ButtonGroup}
-              className="d-flex"
-            >
-            <Button
-              variant="default"
-              className={cn(sharedClasses, activeClass(channel.id), { 'text-truncate': true })}
-              onClick={changeChannel(channel)}
-            >
-              <span className="me-1">#</span>
-              {filter.clean(channel.name)}
-            </Button>
-            <Dropdown.Toggle
-              variant="default"
-              id="react-aria9230295641-1"
-              className={cn(activeClass(channel.id))}
-            >
-              <span className="visually-hidden">{t('buttons.channelManagement')}</span>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={handleClick('removing', channel)}>{t('buttons.remove')}</Dropdown.Item>
-              <Dropdown.Item onClick={handleClick('renaming', channel)}>{t('buttons.rename')}</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-            )
-          }
+            : (
+              <Dropdown
+                as={ButtonGroup}
+                className="d-flex"
+              >
+                <Button
+                  variant="default"
+                  className={cn(sharedClasses, activeClass(channel.id), { 'text-truncate': true })}
+                  onClick={changeChannel(channel)}
+                >
+                  <span className="me-1">#</span>
+                  {filter.clean(channel.name)}
+                </Button>
+                <Dropdown.Toggle
+                  variant="default"
+                  id="react-aria9230295641-1"
+                  className={cn(activeClass(channel.id))}
+                >
+                  <span className="visually-hidden">{t('buttons.channelManagement')}</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={handleClick('removing', channel)}>{t('buttons.remove')}</Dropdown.Item>
+                  <Dropdown.Item onClick={handleClick('renaming', channel)}>{t('buttons.rename')}</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
         </Nav.Item>
       ))}
     </Nav>

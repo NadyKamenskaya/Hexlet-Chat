@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,7 +19,9 @@ const Remove = ({ props }) => {
   });
 
   const onClick = (props) => () => {
-    const { initialState, state, setState, socket } = props;
+    const {
+      initialState, state, setState, socket,
+    } = props;
     const { currentChannel } = state;
     socket.emit('removeChannel', { id: currentChannel.id });
     socket.on('removeChannel', (payload) => {
@@ -42,12 +44,12 @@ const Remove = ({ props }) => {
 
   return (
     <>
-      <div className="fade modal-backdrop show"></div>
+      <div className="fade modal-backdrop show" />
       <div
         className="fade modal show"
         role="dialog"
         arai-modal="true"
-        style={{ display: "block" }}
+        style={{ display: 'block' }}
         tabIndex="-1"
       >
         <Modal.Dialog className="modal-dialog-centered">
