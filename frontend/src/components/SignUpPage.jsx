@@ -13,7 +13,7 @@ import routes from '../routes.js';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
-  const notify = () => toast.success(t('notify.error'));
+  const notify = () => toast.error(t('notify.error'));
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();

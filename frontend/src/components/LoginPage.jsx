@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const notify = () => toast.success(t('notify.error'));
+  const notify = () => toast.error(t('notify.error'));
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
