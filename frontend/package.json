@@ -5,6 +5,7 @@
   "proxy": "http://localhost:5001",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
+    "@rollbar/react": "^0.11.1",
     "axios": "^1.3.5",
     "bootstrap": "^5.2.3",
     "formik": "^2.2.9",
@@ -19,6 +20,7 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.2",
+    "rollbar": "^2.26.1",
     "socket.io-client": "^4.6.1",
     "use-immer": "^0.9.0",
     "web-vitals": "^2.1.4",
@@ -29,12 +31,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -47,5 +43,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-functional": "^5.0.8",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }
