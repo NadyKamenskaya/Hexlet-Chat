@@ -28,6 +28,12 @@ const ru = {
       password: 'Пароль',
       username: 'Имя пользователя',
     },
+    notify: {
+      createdChannel: 'Канал создан',
+      error: 'Ошибка соединения',
+      removedChannel: 'Канал удалён',
+      renamedChannel: 'Канал переименован',
+    },
     ui: {
       addChannel: 'Добавить канал',
       channels: 'Каналы',
