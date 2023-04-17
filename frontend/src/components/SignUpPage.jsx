@@ -38,7 +38,7 @@ const SignUpPage = () => {
       .required(t('errors.required')),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref(t('fields.password')), null], t('errors.checkPassword'))
+      .oneOf([yup.ref('password'), null], t('errors.checkPassword'))
       .required(t('errors.required')),
   });
 
