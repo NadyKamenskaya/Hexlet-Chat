@@ -133,7 +133,7 @@ const SignUpPage = () => {
                       label={t('fields.password')}
                     >
                       <Form.Control
-                        placeholder="Не менее 6 символов"
+                        placeholder={t('errors.minLetter')}
                         name="password"
                         type="password"
                         autoComplete="new-password"
