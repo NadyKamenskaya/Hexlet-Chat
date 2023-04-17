@@ -6,7 +6,7 @@
 
 ### GitHub Actions:
 
-[![GitHub Actions](https://github.com/NadyKamenskaya/frontend-project-11/actions/workflows/github-actions.yml/badge.svg)](https://github.com/NadyKamenskaya/frontend-project-12/actions/workflows/github-actions.yml)
+[![GitHub Actions](https://github.com/NadyKamenskaya/frontend-project-12/actions/workflows/github-actions.yml/badge.svg)](https://github.com/NadyKamenskaya/frontend-project-12/actions/workflows/github-actions.yml)
 
 ### CodeClimate:
 
