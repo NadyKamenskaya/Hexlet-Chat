@@ -114,6 +114,7 @@ const ChatPage = ({ socket }) => {
                     dispatch(messagesActions.addMessage(payload));
                   });
                   inputRef.current.value = '';
+                  values.body = '';
                 }}
                 initialValues={{
                   body: '',
