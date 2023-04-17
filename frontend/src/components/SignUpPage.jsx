@@ -109,7 +109,8 @@ const SignUpPage = () => {
                     >
                       <Form.Control
                         ref={inputRef}
-                        placeholder={t('errors.rangeLetter')}
+                        // placeholder={t('errors.rangeLetter')}
+                        placeholder={t('fields.username')}
                         name="username"
                         autoComplete="username"
                         required
@@ -133,7 +134,8 @@ const SignUpPage = () => {
                       label={t('fields.password')}
                     >
                       <Form.Control
-                        placeholder={t('errors.minLetter')}
+                        // placeholder={t('errors.minLetter')}
+                        placeholder={t('fields.password')}
                         name="password"
                         type="password"
                         autoComplete="new-password"
@@ -155,10 +157,11 @@ const SignUpPage = () => {
                     <FloatingLabel
                       className="mb-4"
                       htmlFor="confirmPassword"
-                      label={t('errors.confirmPassword')}
+                      label={t('fields.confirmPassword')}
                     >
                       <Form.Control
-                        placeholder={t('errors.checkPassword')}
+                        // placeholder={t('errors.checkPassword')}
+                        placeholder={t('fields.confirmPassword')}
                         name="confirmPassword"
                         autoComplete="new-password"
                         required
