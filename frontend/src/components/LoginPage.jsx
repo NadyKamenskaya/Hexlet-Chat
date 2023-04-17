@@ -4,6 +4,7 @@ import { Button, Form, Card, Image, FloatingLabel } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from "react-i18next";
 
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
@@ -14,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
@@ -34,7 +36,7 @@ const LoginPage = () => {
                 <Image
                   variant="roundedCircle"
                   src="https://raw.githubusercontent.com/hexlet-components/js-react-hexlet-chat/main/frontend/src/assets/avatar.jpg"
-                  alt="Войти"
+                  alt={t('buttons.logIn')}
                 />
               </div>
               <Formik
@@ -77,15 +79,15 @@ const LoginPage = () => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-mb-0"
                   >
-                    <h1 className="text-center mb-4">Войти</h1>
+                    <h1 className="text-center mb-4">{t('buttons.logIn')}</h1>
                     <FloatingLabel
                       className="mb-3"
                       htmlFor="username"
-                      label="Ваш ник"
+                      label={t('fields.nickname')}
                     >
                       <Form.Control
                         ref={inputRef}
-                        placeholder="Ваш ник"
+                        placeholder={t('fields.nickname')}
                         name="username"
                         autoComplete="username"
                         required
@@ -99,10 +101,10 @@ const LoginPage = () => {
                       <FloatingLabel
                         className="mb-4"
                         htmlFor="password"
-                        label="Пароль"
+                        label={t('fields.password')}
                       >
                       <Form.Control
-                        placeholder="Пароль"
+                        placeholder={t('fields.password')}
                         name="password"
                         autoComplete="current-password"
                         required
@@ -117,7 +119,7 @@ const LoginPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        Неверные имя пользователя или пароль
+                        {t('errors.incorrect')}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <Button
@@ -125,7 +127,7 @@ const LoginPage = () => {
                       variant="outline-primary"
                       type="submit"
                     >
-                      Войти
+                      {t('buttons.logIn')}
                     </Button>
                   </Form>
                 )}
@@ -133,8 +135,8 @@ const LoginPage = () => {
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>Нет аккаунта? </span>
-                <a href="/signup">Регистрация</a>
+                <span>{t('ui.noAccount')}</span>
+                <a href="/signup">{t('ui.registration')}</a>
               </div>
             </Card.Footer>
           </Card>

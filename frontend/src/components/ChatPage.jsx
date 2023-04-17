@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useImmer } from 'use-immer';
 import { Formik } from 'formik';
+import { useTranslation } from "react-i18next";
 
 import Channels from './Channels.jsx';
 import Channel from './Channel.jsx';
@@ -26,6 +27,7 @@ const getAuthHeader = () => {
 };
 
 const ChatPage = ({ socket }) => {
+  const { t } = useTranslation();
   const currentChannelId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
@@ -71,7 +73,7 @@ const ChatPage = ({ socket }) => {
       <div className="row h-100 flex-md-row bg-white">
         <div className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex bg-light">
           <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-            <b>Каналы</b>
+            <b>{t('ui.channels')}</b>
             <Button
               className="p-0 text-primary"
               variant="group-vertical"
@@ -134,8 +136,8 @@ const ChatPage = ({ socket }) => {
                         className="border-0 p-0 ps-2"
                         onChange={handleChange}
                         name="body"
-                        aria-label="Новое сообщение"
-                        placeholder="Введите сообщение..."
+                        aria-label={t('fields.newMessage')}
+                        placeholder={t('fields.inputMessage')}
                         value={values.body}
                       />
                       <Button
@@ -155,7 +157,7 @@ const ChatPage = ({ socket }) => {
                         >
                           <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
                         </svg>
-                        <span className="visually-hidden">Отправить</span>
+                        <span className="visually-hidden">{t('buttons.submit')}</span>
                       </Button>
                     </InputGroup>
                   </Form>

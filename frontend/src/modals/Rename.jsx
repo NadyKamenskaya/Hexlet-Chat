@@ -3,11 +3,13 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
 import { actions } from '../slices/channelsSlice.js';
 import { selectors } from '../slices/channelsSlice.js';
 
 const Rename = ({ props }) => {
+  const { t } = useTranslation();
   const { state } = props;
   const { currentChannel } = state;
   const dispatch = useDispatch();
@@ -18,10 +20,10 @@ const Rename = ({ props }) => {
   const schema = yup.object().shape({
     name: yup
       .string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channels, 'Должно быть уникальным')
+      .required(t('erros.required'))
+      .min(3, t('erros.rangeLetter'))
+      .max(20, t('erros.rangeLetter'))
+      .notOneOf(channels, t('erros.notOneOf'))
   });
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const Rename = ({ props }) => {
       >
         <Modal.Dialog className="modal-dialog-centered">
           <Modal.Header>
-            <Modal.Title>Переименовать канал</Modal.Title>
+            <Modal.Title>{t('ui.renameChannel')}</Modal.Title>
             <Button
               onClick={onHide(props)}
               type="button"
@@ -111,7 +113,7 @@ const Rename = ({ props }) => {
                         className="visually-hidden"
                         htmlFor="name"
                       >
-                        Имя канала
+                        {t('ui.nameChannel')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {errors.name}
@@ -124,13 +126,13 @@ const Rename = ({ props }) => {
                         type="button"
                         onClick={onHide(props)}
                       >
-                        Отменить
+                        {t('buttons.cancel')}
                       </Button>
                       <Button
                         variant="primary"
                         type="submit"
                       >
-                        Отправить
+                        {t('buttons.submit')}
                       </Button>
                     </div>
                   </div>

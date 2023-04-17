@@ -3,11 +3,13 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
 import { actions } from '../slices/channelsSlice.js';
 import { selectors } from '../slices/channelsSlice.js';
 
 const Add = ({ props }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
@@ -16,10 +18,10 @@ const Add = ({ props }) => {
   const schema = yup.object().shape({
     name: yup
       .string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channels, 'Должно быть уникальным')
+      .required(t('errors.required'))
+      .min(3, t('errors.rangeLetter'))
+      .max(20, t('errors.rangeLetter'))
+      .notOneOf(channels, t('errors.notOneOf'))
   });
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const Add = ({ props }) => {
       >
         <Modal.Dialog className="modal-dialog-centered">
           <Modal.Header>
-            <Modal.Title>Добавить канал</Modal.Title>
+            <Modal.Title>{t('ui.addChannel')}</Modal.Title>
             <Button
               className="border-0"
               onClick={onHide(props)}
@@ -109,7 +111,7 @@ const Add = ({ props }) => {
                         className="visually-hidden"
                         htmlFor="name"
                       >
-                        Имя канала
+                        {t('ui.nameChannel')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {errors.name}
@@ -122,13 +124,13 @@ const Add = ({ props }) => {
                         type="button"
                         onClick={onHide(props)}
                       >
-                        Отменить
+                        {t('buttons.cancel')}
                       </Button>
                       <Button
                         variant="primary"
                         type="submit"
                       >
-                        Отправить
+                        {t('buttons.submit')}
                       </Button>
                     </div>
                   </div>

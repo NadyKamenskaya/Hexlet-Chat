@@ -4,27 +4,13 @@ import { Button, Form, Card, Image, FloatingLabel } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from "react-i18next";
 
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-const schema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
-    .required('Обязательное поле'),
-  password: yup
-    .string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], 'Пароли должны совпадать')
-    .required('Обязательное поле'),
-});
-
-const SignUpPage = ({ socket }) => {
+const SignUpPage = () => {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
@@ -35,6 +21,22 @@ const SignUpPage = ({ socket }) => {
     inputRef.current.focus();
   }, []);
 
+  const schema = yup.object().shape({
+    username: yup
+      .string()
+      .min(3, t('errors.rangeLetter'))
+      .max(20, t('errors.rangeLetter'))
+      .required(t('errors.required')),
+    password: yup
+      .string()
+      .min(6, t('errors.minLetter'))
+      .required(t('errors.required')),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref(t('fields.password')), null], t('errors.checkPassword'))
+      .required(t('errors.required')),
+  });
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -44,7 +46,11 @@ const SignUpPage = ({ socket }) => {
               className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5"
             >
               <div>
-                <Image className="rounded-circle" src="https://frontend-chat-ru.hexlet.app/static/media/avatar_1.6084447160acc893a24d.jpg" alt="Регистрация" />
+                <Image
+                  className="rounded-circle"
+                  src="https://frontend-chat-ru.hexlet.app/static/media/avatar_1.6084447160acc893a24d.jpg"
+                  alt={t('ui.registration')}
+                />
               </div>
               <Formik
                 validationSchema={schema}
@@ -87,15 +93,15 @@ const SignUpPage = ({ socket }) => {
                     onSubmit={handleSubmit}
                     className="w-50"
                   >
-                    <h1 className="text-center mb-4">Регистрация</h1>
+                    <h1 className="text-center mb-4">{t('ui.registration')}</h1>
                     <FloatingLabel
                       className="mb-3"
                       htmlFor="username"
-                      label="Имя пользователя"
+                      label={t('fields.username')}
                     >
                       <Form.Control
                         ref={inputRef}
-                        placeholder="От 3 до 20 символов"
+                        placeholder={t('errors.rangeLetter')}
                         name="username"
                         autoComplete="username"
                         required
@@ -116,7 +122,7 @@ const SignUpPage = ({ socket }) => {
                       <FloatingLabel
                       className="mb-3"
                       htmlFor="password"
-                      label="Пароль"
+                      label={t('fields.password')}
                       >
                       <Form.Control
                         placeholder="Не менее 6 символов"
@@ -141,10 +147,10 @@ const SignUpPage = ({ socket }) => {
                       <FloatingLabel
                         className="mb-4"
                         htmlFor="confirmPassword"
-                        label="Подтвердите пароль"
+                        label={t('errors.confirmPassword')}
                       >
                       <Form.Control
-                        placeholder="Пароли должны совпадать"
+                        placeholder={t('errors.checkPassword')}
                         name="confirmPassword"
                         autoComplete="new-password"
                         required
@@ -159,7 +165,7 @@ const SignUpPage = ({ socket }) => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.confirmPassword || 'Такой пользователь уже существует'}
+                        {errors.confirmPassword || t('errors.alreadyExists')}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <Button
@@ -167,7 +173,7 @@ const SignUpPage = ({ socket }) => {
                       variant="outline-primary"
                       type="submit"
                     >
-                      Зарегистрироваться
+                      {t('buttons.register')}
                     </Button>
                   </Form>
                 )}

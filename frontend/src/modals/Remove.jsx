@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
 import { actions } from '../slices/channelsSlice.js';
 
 const Remove = ({ props }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const currentChannelId = useSelector((state) => {
@@ -46,7 +48,7 @@ const Remove = ({ props }) => {
       >
         <Modal.Dialog className="modal-dialog-centered">
           <Modal.Header>
-            <Modal.Title>Удалить канал</Modal.Title>
+            <Modal.Title>{t('ui.removeChannel')}</Modal.Title>
             <Button
               onClick={onHide(props)}
               type="button"
@@ -64,13 +66,13 @@ const Remove = ({ props }) => {
                 className="me-2"
                 onClick={onHide(props)}
               >
-                Отменить
+                {t('buttons.cancel')}
               </Button>
               <Button
                 variant="danger"
                 onClick={onClick(props)}
               >
-                Удалить
+                {t('buttons.remove')}
               </Button>
             </div>
           </Modal.Body>

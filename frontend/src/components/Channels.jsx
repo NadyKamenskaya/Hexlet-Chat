@@ -2,11 +2,13 @@ import React from 'react';
 import { Nav, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
+import { useTranslation } from "react-i18next";
 
 import { selectors } from '../slices/channelsSlice.js';
 import { actions } from '../slices/channelsSlice.js';
 
 const Channels = ({ props }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const channels = useSelector(selectors.selectAll);
@@ -77,11 +79,11 @@ const Channels = ({ props }) => {
               id="react-aria9230295641-1"
               className={cn(activeClass(channel.id))}
             >
-              <span className="visually-hidden">Управление каналом</span>
+              <span className="visually-hidden">{t('buttons.channelManagement')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={handleClick('removing', channel)}>Удалить</Dropdown.Item>
-              <Dropdown.Item onClick={handleClick('renaming', channel)}>Переименовать</Dropdown.Item>
+              <Dropdown.Item onClick={handleClick('removing', channel)}>{t('buttons.remove')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleClick('renaming', channel)}>{t('buttons.rename')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
             )

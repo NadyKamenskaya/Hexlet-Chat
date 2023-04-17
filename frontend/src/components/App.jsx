@@ -45,11 +45,12 @@ const ChatRoute = ({ children }) => {
 };
 
 const AuthButton = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
 
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut} variant="primary">Выйти</Button>
+      ? <Button onClick={auth.logOut} variant="primary">{t('buttons.logOut')}</Button>
       : null
   );
 };
@@ -64,7 +65,7 @@ const App = ({ socket }) => {
           <Router>
             <Navbar className="shadow-sm" bg="white" expand="lg">
               <div className="container">
-                <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">{t('ui.hexletChat')}</Navbar.Brand>
                 <AuthButton />
               </div>
             </Navbar>

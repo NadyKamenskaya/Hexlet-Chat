@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
 import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { selectors as messagesSelectors } from '../slices/messagesSlice.js';
 
 const Channel = () => {
+  const { t } = useTranslation();
   const messages = useSelector(messagesSelectors.selectAll);
   const channels = useSelector(channelsSelectors.selectAll);
   
@@ -22,7 +24,7 @@ const Channel = () => {
         <b># {currentChannel.name}</b>
       </p>
       <span className="text-muted">
-        {messagesAmount}
+        {t('ui.counter.count', { count: messagesAmount })}
       </span>
     </div>
   );
