@@ -3,11 +3,13 @@ import { Nav, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from "react-i18next";
+import filter from 'leo-profanity';
 
 import { selectors } from '../slices/channelsSlice.js';
 import { actions } from '../slices/channelsSlice.js';
 
 const Channels = ({ props }) => {
+  filter.loadDictionary('ru');
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -58,7 +60,7 @@ const Channels = ({ props }) => {
                 onClick={changeChannel(channel)}
               >
                 <span className="me-1">#</span>
-                {channel.name}
+                {filter.clean(channel.name)}
               </Button>
             )
           : (
@@ -72,7 +74,7 @@ const Channels = ({ props }) => {
               onClick={changeChannel(channel)}
             >
               <span className="me-1">#</span>
-              {channel.name}
+              {filter.clean(channel.name)}
             </Button>
             <Dropdown.Toggle
               variant="default"

@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import filter from 'leo-profanity';
 
 const Message = ({ message }) => {
+  filter.loadDictionary('ru');
   const channelId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
@@ -15,8 +17,7 @@ const Message = ({ message }) => {
   return (
     <div className="text-break mb-2">
       <b>{username}</b>
-      :
-      {` ${body}`}
+      {`: ${filter.clean(body)}`}
     </div>
   );
 };
