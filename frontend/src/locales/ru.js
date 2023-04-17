@@ -13,7 +13,6 @@ const ru = {
     errors: {
       alreadyExists: 'Такой пользователь уже существует',
       checkPassword: 'Пароли должны совпадать',
-      confirmPassword: 'Подтвердите пароль',
       incorrect: 'Неверные имя пользователя или пароль',
       minLetter: 'Не менее 6 символов',
       notOneOf: 'Должно быть уникальным',
@@ -21,6 +20,7 @@ const ru = {
       required: 'Обязательное поле',
     },
     fields: {
+      confirmPassword: 'Подтвердите пароль',
       inputMessage: 'Введите сообщение...',
       newMessage: 'Новое сообщение',
       newPassword: 'new-password',
