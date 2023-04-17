@@ -1,3 +1,4 @@
 import ru from './ru.js';
 
-export default ru;
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { ru };
