@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import {
   Nav, Dropdown, ButtonGroup, Button,

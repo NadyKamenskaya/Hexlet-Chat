@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useRef } from 'react';

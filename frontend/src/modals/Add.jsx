@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useRef } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
