@@ -7,7 +7,7 @@ import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { selectors as messagesSelectors } from '../slices/messagesSlice.js';
 
 const Channel = () => {
-  filter.loadDictionary('ru');
+  filter.getDictionary();
   const { t } = useTranslation();
   const messages = useSelector(messagesSelectors.selectAll);
   const channels = useSelector(channelsSelectors.selectAll);

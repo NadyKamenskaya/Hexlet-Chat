@@ -10,7 +10,7 @@ import filter from 'leo-profanity';
 import { selectors, actions } from '../slices/channelsSlice.js';
 
 const Channels = ({ props }) => {
-  filter.loadDictionary('ru');
+  filter.getDictionary();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 

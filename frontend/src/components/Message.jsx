@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import filter from 'leo-profanity';
 
 const Message = ({ message }) => {
-  filter.loadDictionary('ru');
+  filter.getDictionary();
   const channelId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
