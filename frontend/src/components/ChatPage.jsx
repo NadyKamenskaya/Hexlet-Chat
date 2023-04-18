@@ -138,7 +138,7 @@ const ChatPage = ({ socket }) => {
                         className="border-0 p-0 ps-2"
                         onChange={handleChange}
                         name="body"
-                        aria-label="new-message"
+                        aria-label={t('fields.newMessage')}
                         placeholder={t('fields.inputMessage')}
                         value={values.body}
                       />
