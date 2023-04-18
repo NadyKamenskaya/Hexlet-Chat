@@ -87,6 +87,7 @@ const LoginPage = () => {
                   >
                     <h1 className="text-center mb-4">{t('buttons.logIn')}</h1>
                     <FloatingLabel
+                      controlId="username"
                       className="mb-3"
                       htmlFor="username"
                       label={t('fields.nickname')}
@@ -105,6 +106,7 @@ const LoginPage = () => {
                       />
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="password"
                       className="mb-4"
                       htmlFor="password"
                       label={t('fields.password')}
