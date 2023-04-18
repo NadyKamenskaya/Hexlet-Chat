@@ -103,6 +103,7 @@ const SignUpPage = () => {
                   >
                     <h1 className="text-center mb-4">{t('ui.registration')}</h1>
                     <FloatingLabel
+                      controlId="username"
                       className="mb-3"
                       htmlFor="username"
                       label={t('fields.username')}
@@ -129,6 +130,7 @@ const SignUpPage = () => {
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="password"
                       className="mb-3"
                       htmlFor="password"
                       label={t('fields.password')}
@@ -155,6 +157,7 @@ const SignUpPage = () => {
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="confirmPassword"
                       className="mb-4"
                       htmlFor="confirmPassword"
                       label={t('fields.confirmPassword')}
