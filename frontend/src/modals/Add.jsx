@@ -31,10 +31,10 @@ const Add = ({ props }) => {
     inputRef.current.focus();
   }, []);
 
-  const onHide = (props) => () => {
-    const { setState } = props;
-    setState((state) => {
-      state.modal = false;
+  const onHide = () => () => {
+    const { state, setState } = props;
+    setState((prevState) => {
+      state.modal = !prevState;
       state.value = null;
     });
   };

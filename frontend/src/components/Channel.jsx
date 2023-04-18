@@ -14,11 +14,11 @@ const Channel = () => {
 
   const { currentChannel, messagesAmount } = useSelector((state) => {
     const { currentChannelId } = state.channels;
-    const currentChannel = channels.find(({ id }) => id === currentChannelId);
-    const messagesAmount = messages
+    const channel = channels.find(({ id }) => id === currentChannelId);
+    const amount = messages
       .filter(({ channelId }) => channelId === currentChannelId).length;
 
-    return { currentChannel, messagesAmount };
+    return { channel, amount };
   });
 
   return currentChannel && (

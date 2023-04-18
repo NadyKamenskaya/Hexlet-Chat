@@ -28,7 +28,7 @@ const getAuthHeader = () => {
 
 const ChatPage = ({ socket }) => {
   const { t } = useTranslation();
-  const currentChannelId = useSelector((state) => {
+  const currentId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
     return currentChannelId;
@@ -53,8 +53,8 @@ const ChatPage = ({ socket }) => {
   }, [dispatch]);
 
   const handleClick = (value) => () => {
-    setState((state) => {
-      state.modal = !state.modal;
+    setState((prevState) => {
+      state.modal = !prevState.modal;
       state.value = value;
     });
   };
@@ -94,7 +94,7 @@ const ChatPage = ({ socket }) => {
               <span className="visually-hidden">+</span>
             </Button>
           </div>
-          <Channels props={setState} />
+          <Channels props={{ state, setState }} />
         </div>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
@@ -109,12 +109,12 @@ const ChatPage = ({ socket }) => {
               <Formik
                 onSubmit={(values) => {
                   const { username } = JSON.parse(localStorage.userId);
-                  socket.emit('newMessage', { body: values.body, channelId: currentChannelId, username });
+                  socket.emit('newMessage', { body: values.body, channelId: currentId, username });
                   socket.on('newMessage', (payload) => {
                     dispatch(messagesActions.addMessage(payload));
                   });
                   inputRef.current.value = '';
-                  values.body = '';
+                  // values.body = '';
                 }}
                 initialValues={{
                   body: '',

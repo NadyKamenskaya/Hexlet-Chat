@@ -12,13 +12,13 @@ const Remove = ({ props }) => {
   const notify = () => toast.success(t('notify.removedChannel'));
   const dispatch = useDispatch();
 
-  const currentChannelId = useSelector((state) => {
+  const currentId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
     return currentChannelId;
   });
 
-  const onClick = (props) => () => {
+  const onClick = () => () => {
     const {
       initialState, state, setState, socket,
     } = props;
@@ -26,7 +26,7 @@ const Remove = ({ props }) => {
     socket.emit('removeChannel', { id: currentChannel.id });
     socket.on('removeChannel', (payload) => {
       dispatch(actions.removeChannel(payload));
-      if (payload.id === currentChannelId) {
+      if (payload.id === currentId) {
         dispatch(actions.changeChannel(1));
       }
     });
@@ -34,10 +34,10 @@ const Remove = ({ props }) => {
     notify();
   };
 
-  const onHide = (props) => () => {
-    const { setState } = props;
-    setState((state) => {
-      state.modal = false;
+  const onHide = () => () => {
+    const { state, setState } = props;
+    setState((prevState) => {
+      state.modal = !prevState;
       state.value = null;
     });
   };
