@@ -12,7 +12,7 @@ import { actions, selectors } from '../slices/channelsSlice.js';
 const Rename = ({ props }) => {
   const { t } = useTranslation();
   const notify = () => toast.success(t('notify.renamedChannel'));
-  const { state, setState } = props;
+  const { state } = props;
   const { currentChannel } = state;
   const dispatch = useDispatch();
   const inputRef = useRef(null);
@@ -33,9 +33,10 @@ const Rename = ({ props }) => {
     inputRef.current.select();
   }, [dispatch]);
 
-  const onHide = () => () => {
-    setState((prevState) => {
-      state.modal = !prevState;
+  const onHide = (props) => () => {
+    const { setState } = props;
+    setState((state) => {
+      state.modal = false;
       state.value = null;
     });
   };
@@ -66,7 +67,7 @@ const Rename = ({ props }) => {
             <Formik
               validationSchema={schema}
               onSubmit={(values, { setSubmitting }) => {
-                const { initialState, socket } = props;
+                const { initialState, setState, socket } = props;
 
                 try {
                   const { name } = values;

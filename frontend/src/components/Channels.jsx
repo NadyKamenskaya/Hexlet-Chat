@@ -2,28 +2,28 @@ import React from 'react';
 import {
   Nav, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
-import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+
 import { selectors, actions } from '../slices/channelsSlice.js';
 
 const Channels = ({ props }) => {
   filter.getDictionary();
-  const { state, setState } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const channels = useSelector(selectors.selectAll);
-  const currentId = useSelector((stat) => {
-    const { currentChannelId } = stat.channels;
+  const currentChannelId = useSelector((state) => {
+    const { currentChannelId } = state.channels;
 
     return currentChannelId;
   });
 
   const handleClick = (value, channel) => () => {
-    setState((prevState) => {
-      state.modal = !prevState.modal;
+    props((state) => {
+      state.modal = !state.modal;
       state.value = value;
       state.currentChannel = channel;
     });
@@ -39,7 +39,7 @@ const Channels = ({ props }) => {
     'text-start': true,
   };
   const activeClass = (id) => ({
-    'btn-secondary': id === currentId,
+    'btn-secondary': id === currentChannelId,
   });
 
   return channels && (
