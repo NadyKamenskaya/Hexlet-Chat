@@ -7,8 +7,12 @@ import resources from './locales/index.js';
 
 const init = async (socket) => {
   const rollbarConfig = {
-    accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
-    environment: 'production',
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+    payload: {
+      environment: 'production',
+    },
+    captureUncaught: true,
+    captureUnhandledRejections: true,
   };
 
   const i18n = i18next.createInstance();
