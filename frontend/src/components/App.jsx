@@ -13,10 +13,10 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 
 import store from '../slices/index.js';
-import LoginPage from './LoginPage.jsx';
-import SignUpPage from './SignUpPage.jsx';
-import ChatPage from './ChatPage.jsx';
-import NotFoundPage from './NotFoundPage.jsx';
+import LoginPage from './Login/LoginPage.jsx';
+import SignUpPage from './SignUp/SignUpPage.jsx';
+import ChatPage from './Chat/ChatPage.jsx';
+import NotFoundPage from './NotFound/NotFoundPage.jsx';
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
