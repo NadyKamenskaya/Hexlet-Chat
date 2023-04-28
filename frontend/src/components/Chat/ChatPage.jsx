@@ -1,22 +1,27 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+
 import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useImmer } from 'use-immer';
-import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 
-import Channels from './components/Channels';
-import Channel from './components/Channel.jsx';
-import Messages from './components/Messages.jsx';
-import routes from '../../routes.js';
-import getModal from '../../modals/index.js';
+import axios from 'axios';
+import { useImmer } from 'use-immer';
+import { useFormik } from 'formik';
+
+import { useApi } from '../../hooks/index.jsx';
+
+import { apiRoutes } from '../../routes/routes.js';
 
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { actions as messagesActions } from '../../slices/messagesSlice.js';
+
+import getModal from '../common/modals/index.js';
+import Channel from './components/Channel.jsx';
+import Channels from './components/Channels';
+import Messages from './components/Messages.jsx';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -28,24 +33,25 @@ const getAuthHeader = () => {
   return {};
 };
 
-const ChatPage = ({ socket }) => {
+const ChatPage = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const api = useApi();
+
+  const inputRef = useRef(null);
+  const initialState = { modal: false, value: null, currentChannel: null };
+  const [state, setState] = useImmer(initialState);
   const currentChannelId = useSelector((state) => {
     const { currentChannelId } = state.channels;
 
     return currentChannelId;
   });
-  const initialState = { modal: false, value: null, currentChannel: null };
-  const [state, setState] = useImmer(initialState);
-
-  const dispatch = useDispatch();
-  const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
 
     const fetchData = async () => {
-      const res = await axios.get(routes.dataPath(), { headers: getAuthHeader() });
+      const res = await axios.get(apiRoutes.dataPath(), { headers: getAuthHeader() });
       const { channels, messages } = res.data;
       dispatch(channelsActions.addChannels(channels));
       dispatch(messagesActions.addMessages(messages));
@@ -53,6 +59,18 @@ const ChatPage = ({ socket }) => {
 
     fetchData();
   }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: {
+      body: '',
+    },
+    onSubmit: (values) => {
+      const { username } = JSON.parse(localStorage.userId);
+      api.addMessage(values.body, currentChannelId, username);
+      inputRef.current.value = '';
+      values.body = '';
+    },
+  });
 
   const handleClick = (value) => () => {
     setState((state) => {
@@ -108,71 +126,50 @@ const ChatPage = ({ socket }) => {
               <Messages />
             </div>
             <div className="mt-auto px-5 py-3">
-              <Formik
-                onSubmit={(values) => {
-                  const { username } = JSON.parse(localStorage.userId);
-                  socket.emit('newMessage', { body: values.body, channelId: currentChannelId, username });
-                  socket.on('newMessage', (payload) => {
-                    dispatch(messagesActions.addMessage(payload));
-                  });
-                  inputRef.current.value = '';
-                  values.body = '';
-                }}
-                initialValues={{
-                  body: '',
-                }}
+              <Form
+                noValidate
+                onSubmit={formik.handleSubmit}
+                className="py-1 border rounded-2"
               >
-                {({
-                  handleSubmit,
-                  handleChange,
-                  values,
-                }) => (
-                  <Form
-                    onSubmit={handleSubmit}
-                    className="py-1 border rounded-2"
-                    noValidate
+                <InputGroup
+                  hasValidation={formik.values.body.length === 0}
+                >
+                  <Form.Control
+                    ref={inputRef}
+                    className="border-0 p-0 ps-2"
+                    onChange={formik.handleChange}
+                    name="body"
+                    aria-label={t('fields.newMessage')}
+                    placeholder={t('fields.inputMessage')}
+                    value={formik.values.body}
+                  />
+                  <Button
+                    variant="group-vertical"
+                    type="submit"
+                    className="border-0"
+                    disabled={formik.values.body.length === 0}
                   >
-                    <InputGroup
-                      hasValidation={values.body.length === 0}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      style={{ '--darkreader-inline-fill': 'currentColor' }}
+                      data-darkreader-inline-fill=""
                     >
-                      <Form.Control
-                        ref={inputRef}
-                        className="border-0 p-0 ps-2"
-                        onChange={handleChange}
-                        name="body"
-                        aria-label={t('fields.newMessage')}
-                        placeholder={t('fields.inputMessage')}
-                        value={values.body}
-                      />
-                      <Button
-                        variant="group-vertical"
-                        type="submit"
-                        className="border-0"
-                        disabled={values.body.length === 0}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 16 16"
-                          width="20"
-                          height="20"
-                          fill="currentColor"
-                          style={{ '--darkreader-inline-fill': 'currentColor' }}
-                          data-darkreader-inline-fill=""
-                        >
-                          <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-                        </svg>
-                        <span className="visually-hidden">{t('buttons.submit')}</span>
-                      </Button>
-                    </InputGroup>
-                  </Form>
-                )}
-              </Formik>
+                      <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+                    </svg>
+                    <span className="visually-hidden">{t('buttons.submit')}</span>
+                  </Button>
+                </InputGroup>
+              </Form>
             </div>
           </div>
         </div>
       </div>
       {renderModal({
-        initialState, state, setState, socket,
+        initialState, state, setState,
       })}
     </div>
   );
