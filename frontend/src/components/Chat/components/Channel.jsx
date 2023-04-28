@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ import { selectors as messagesSelectors } from '../../../slices/messagesSlice.js
 const Channel = () => {
   filter.getDictionary();
   const { t } = useTranslation();
+
   const messages = useSelector(messagesSelectors.selectAll);
   const channels = useSelector(channelsSelectors.selectAll);
 

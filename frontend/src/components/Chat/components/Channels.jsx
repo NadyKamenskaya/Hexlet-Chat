@@ -1,13 +1,15 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
+
 import React from 'react';
 import {
   Nav, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
+
+import cn from 'classnames';
 import filter from 'leo-profanity';
 
 import { selectors, actions } from '../../../slices/channelsSlice.js';

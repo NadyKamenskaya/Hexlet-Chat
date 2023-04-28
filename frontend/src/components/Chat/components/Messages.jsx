@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Message from './Message.jsx';
 import { selectors } from '../../../slices/messagesSlice.js';
+
+import Message from './Message.jsx';
 
 const Messages = () => {
   const messages = useSelector(selectors.selectAll);
