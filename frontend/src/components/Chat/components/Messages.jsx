@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectors } from '../../../slices/messagesSlice.js';
+import { customSelectors } from '../../../slices/messagesSlice.js';
 
 import Message from './Message.jsx';
 
 const Messages = () => {
-  const messages = useSelector(selectors.selectAll);
+  const messages = useSelector(customSelectors.selectAllMesagges);
 
   return messages && (
     <>

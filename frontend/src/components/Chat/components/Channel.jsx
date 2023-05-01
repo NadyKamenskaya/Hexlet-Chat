@@ -5,24 +5,15 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 
-import { selectors as channelsSelectors } from '../../../slices/channelsSlice.js';
-import { selectors as messagesSelectors } from '../../../slices/messagesSlice.js';
+import { customSelectors as channelsSelectors } from '../../../slices/channelsSlice.js';
+import { customSelectors as messagesSelectors } from '../../../slices/messagesSlice.js';
 
 const Channel = () => {
   filter.getDictionary();
   const { t } = useTranslation();
 
-  const messages = useSelector(messagesSelectors.selectAll);
-  const channels = useSelector(channelsSelectors.selectAll);
-
-  const { currentChannel, messagesAmount } = useSelector((state) => {
-    const { currentChannelId } = state.channels;
-    const currentChannel = channels.find(({ id }) => id === currentChannelId);
-    const messagesAmount = messages
-      .filter(({ channelId }) => channelId === currentChannelId).length;
-
-    return { currentChannel, messagesAmount };
-  });
+  const currentChannel = useSelector(channelsSelectors.currentChannel);
+  const messagesAmount = useSelector(messagesSelectors.selectCurrentChannelMessages);
 
   return currentChannel && (
     <div className="bg-light mb-4 p-3 shadow-sm small">

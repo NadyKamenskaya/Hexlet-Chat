@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
+
 import { AuthContext } from '../contexts/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('userId'));
+  const [user, setUser] = useState(currentUser);
 
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
+  const logIn = useCallback((data) => {
+    localStorage.setItem('userId', JSON.stringify(data));
+    setUser(data);
+  }, []);
+
+  const logOut = useCallback(() => {
     localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
+    setUser(null);
+  }, []);
+
+  const getAuthHeader = useCallback(() => {
+    if (user && user.token) {
+      return { Authorization: `Bearer ${user.token}` };
+    }
+
+    return {};
+  }, [user]);
+
+  const context = useMemo(() => ({
+    user, logIn, logOut, getAuthHeader,
+  }), [user, logIn, logOut, getAuthHeader]);
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={context}>
       {children}
     </AuthContext.Provider>
   );

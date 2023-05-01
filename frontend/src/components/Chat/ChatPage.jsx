@@ -1,103 +1,70 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form } from 'react-bootstrap';
-import InputGroup from 'react-bootstrap/InputGroup';
+import {
+  Container, Row, Col, Button, Form, InputGroup,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import axios from 'axios';
-import { useImmer } from 'use-immer';
 import { useFormik } from 'formik';
 
-import { useApi } from '../../hooks/index.jsx';
+import { useAuth, useApi } from '../../hooks/index.jsx';
 
-import { apiRoutes } from '../../routes/routes.js';
+import fetchData from '../../slices/fetchData.js';
+import { customSelectors } from '../../slices/channelsSlice.js';
+import { customSelectors as messagesSelectors } from '../../slices/messagesSlice.js';
+import { actions } from '../../slices/modalSlice.js';
 
-import { actions as channelsActions } from '../../slices/channelsSlice.js';
-import { actions as messagesActions } from '../../slices/messagesSlice.js';
-
-import getModal from '../common/modals/index.js';
+import Modal from '../common/Modal/index.js';
 import Channel from './components/Channel.jsx';
 import Channels from './components/Channels';
 import Messages from './components/Messages.jsx';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
 
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const api = useApi();
-
+  const { getAuthHeader } = useAuth();
   const inputRef = useRef(null);
-  const initialState = { modal: false, value: null, currentChannel: null };
-  const [state, setState] = useImmer(initialState);
-  const currentChannelId = useSelector((state) => {
-    const { currentChannelId } = state.channels;
-
-    return currentChannelId;
-  });
+  const channels = useSelector(customSelectors.allChannels);
+  const currentChannel = useSelector(customSelectors.currentChannel);
+  const currentChannelMessages = useSelector(messagesSelectors.selectCurrentChannelMessages);
 
   useEffect(() => {
     inputRef.current.focus();
+    const header = getAuthHeader();
+    dispatch(fetchData(header));
+  }, [dispatch, getAuthHeader]);
 
-    const fetchData = async () => {
-      const res = await axios.get(apiRoutes.dataPath(), { headers: getAuthHeader() });
-      const { channels, messages } = res.data;
-      dispatch(channelsActions.addChannels(channels));
-      dispatch(messagesActions.addMessages(messages));
-    };
-
-    fetchData();
-  }, [dispatch]);
+  const handleAdd = () => {
+    dispatch(actions.open({ type: 'adding' }));
+  };
 
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const { username } = JSON.parse(localStorage.userId);
-      api.addMessage(values.body, currentChannelId, username);
+      await api.addMessage(values.body, currentChannel, username);
       inputRef.current.value = '';
       values.body = '';
     },
   });
 
-  const handleClick = (value) => () => {
-    setState((state) => {
-      state.modal = !state.modal;
-      state.value = value;
-    });
-  };
-
-  const renderModal = (props) => {
-    if (!state.modal) {
-      return null;
-    }
-    const Component = getModal(state.value);
-
-    return <Component props={props} />;
-  };
-
   return (
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
-      <div className="row h-100 flex-md-row bg-white">
-        <div className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex bg-light">
+    <Container className="h-100 my-4 overflow-hidden rounded shadow">
+      <Row className="row h-100 flex-md-row bg-white">
+        <Col className="xs={4} md={2} border-end px-0 flex-column h-100 d-flex bg-light">
           <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
             <b>{t('ui.channels')}</b>
             <Button
               className="p-0 text-primary"
               variant="group-vertical"
-              onClick={handleClick('adding')}
+              onClick={handleAdd}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -114,8 +81,8 @@ const ChatPage = () => {
               <span className="visually-hidden">+</span>
             </Button>
           </div>
-          <Channels props={setState} />
-        </div>
+          <Channels channels={channels} currentChannelId={currentChannel.id} />
+        </Col>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <Channel />
@@ -123,7 +90,7 @@ const ChatPage = () => {
               className="chat-messages overflow-auto px-5"
               id="messages-box"
             >
-              <Messages />
+              <Messages channel={currentChannel} messages={currentChannelMessages} />
             </div>
             <div className="mt-auto px-5 py-3">
               <Form
@@ -167,11 +134,9 @@ const ChatPage = () => {
             </div>
           </div>
         </div>
-      </div>
-      {renderModal({
-        initialState, state, setState,
-      })}
-    </div>
+      </Row>
+      <Modal />
+    </Container>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Button, Form, Card, Image, FloatingLabel,
+  Button, Form, Card, Image,
 } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useAuth } from '../../hooks/index.jsx';
-import { apiRoutes } from '../../routes/routes.js';
+import { routes, apiRoutes } from '../../routes/routes.js';
 
 import image from '../../assets/avatar.jpg';
 
@@ -41,9 +41,8 @@ const LoginPage = () => {
 
       try {
         const res = await axios.post(apiRoutes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        const { from } = location.state || { from: { pathname: '/' } };
+        auth.logIn(res.data);
+        const { from } = location.state || { from: { pathname: routes.chatPage } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
@@ -83,57 +82,60 @@ const LoginPage = () => {
                 className="col-12 col-md-6 mt-3 mt-mb-0"
               >
                 <h1 className="text-center mb-4">{t('buttons.logIn')}</h1>
-                <FloatingLabel
-                  controlId="username"
-                  className="mb-3"
-                  htmlFor="username"
-                  label={t('fields.nickname')}
-                >
-                  <Form.Control
-                    ref={inputRef}
-                    placeholder={t('fields.nickname')}
-                    name="username"
-                    autoComplete="username"
-                    required
-                    id="username"
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    isInvalid={authFailed}
-                    isValid={formik.touched.username && !formik.errors.username}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="password"
-                  className="mb-4"
-                  htmlFor="password"
-                  label={t('fields.password')}
-                >
-                  <Form.Control
-                    placeholder={t('fields.password')}
-                    name="password"
-                    autoComplete="current-password"
-                    required
-                    id="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    isInvalid={authFailed}
-                    isValid={formik.touched.password && !formik.errors.password}
-                  />
-                  <Form.Control.Feedback
-                    type="invalid"
-                    tooltip
+                <fieldset disabled={formik.isSubmitting}>
+                  <Form.Group
+                    className="mb-3 form-floating"
+                    controlId="username"
                   >
-                    {t('errors.incorrect')}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <Button
-                  className="w-100 mb-3"
-                  variant="outline-primary"
-                  type="submit"
-                >
-                  {t('buttons.logIn')}
-                </Button>
+                    <Form.Control
+                      ref={inputRef}
+                      placeholder={t('fields.nickname')}
+                      name="username"
+                      autoComplete="username"
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.username}
+                      isInvalid={authFailed}
+                      isValid={formik.touched.username && !formik.errors.username}
+                    />
+                    <Form.Label>{t('fields.nickname')}</Form.Label>
+                    <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip={formik.errors.username && formik.touched.username}>
+                      {formik.errors.username}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group
+                    controlId="password"
+                    className="mb-4 form-floating"
+                  >
+                    <Form.Control
+                      placeholder={t('fields.password')}
+                      name="password"
+                      autoComplete="current-password"
+                      required
+                      type="password"
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                      isInvalid={authFailed}
+                      isValid={formik.touched.password && !formik.errors.password}
+                    />
+                    <Form.Label>
+                      {t('fields.password')}
+                    </Form.Label>
+                    <Form.Control.Feedback
+                      type="invalid"
+                      tooltip
+                    >
+                      {t('errors.incorrect')}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Button
+                    className="w-100 mb-3"
+                    variant="outline-primary"
+                    type="submit"
+                  >
+                    {t('buttons.logIn')}
+                  </Button>
+                </fieldset>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">

@@ -6,36 +6,40 @@ import React from 'react';
 import {
   Nav, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import cn from 'classnames';
 import filter from 'leo-profanity';
 
-import { selectors, actions } from '../../../slices/channelsSlice.js';
+import { actions as channelsActions } from '../../../slices/channelsSlice.js';
+import { actions as modalActions } from '../../../slices/modalSlice.js';
 
-const Channels = ({ props }) => {
+const Channels = ({ channels, currentChannelId }) => {
   filter.getDictionary();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const channels = useSelector(selectors.selectAll);
-  const currentChannelId = useSelector((state) => {
-    const { currentChannelId } = state.channels;
-
-    return currentChannelId;
-  });
-
-  const handleClick = (value, channel) => () => {
-    props((state) => {
-      state.modal = !state.modal;
-      state.value = value;
-      state.currentChannel = channel;
-    });
+  const handleSelect = (id) => () => {
+    dispatch(channelsActions.changeChannel(id));
   };
 
-  const changeChannel = (channel) => () => {
-    dispatch(actions.changeChannel(channel.id));
+  const handleRename = (id, name) => () => {
+    const context = {
+      channelId: id,
+      channelName: name,
+    };
+
+    dispatch(modalActions.open({ type: 'renaming', context }));
+  };
+
+  const handleRemove = (id, name) => () => {
+    const context = {
+      channelId: id,
+      channelName: name,
+    };
+
+    dispatch(modalActions.open({ type: 'removing', context }));
   };
 
   const sharedClasses = {
@@ -63,7 +67,7 @@ const Channels = ({ props }) => {
               <Button
                 variant="default"
                 className={cn(sharedClasses, activeClass(channel.id))}
-                onClick={changeChannel(channel)}
+                onClick={handleSelect(channel.id)}
               >
                 <span className="me-1">#</span>
                 {filter.clean(channel.name)}
@@ -77,7 +81,7 @@ const Channels = ({ props }) => {
                 <Button
                   variant="default"
                   className={cn(sharedClasses, activeClass(channel.id), { 'text-truncate': true })}
-                  onClick={changeChannel(channel)}
+                  onClick={handleSelect(channel.id)}
                 >
                   <span className="me-1">#</span>
                   {filter.clean(channel.name)}
@@ -90,8 +94,8 @@ const Channels = ({ props }) => {
                   <span className="visually-hidden">{t('buttons.channelManagement')}</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleClick('removing', channel)}>{t('buttons.remove')}</Dropdown.Item>
-                  <Dropdown.Item onClick={handleClick('renaming', channel)}>{t('buttons.rename')}</Dropdown.Item>
+                  <Dropdown.Item onClick={handleRemove(channel.id, channel.name)}>{t('buttons.remove')}</Dropdown.Item>
+                  <Dropdown.Item onClick={handleRename(channel.id, channel.name)}>{t('buttons.rename')}</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}
