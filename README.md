@@ -49,19 +49,19 @@ make start
 
 ## Demo
 
-(frontend-project-12/frontend/images/logIn.png)
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/logIn.png>
 
 ---
 
-(C:\Users\Lenovo ThinkPad\Desktop\2.png)
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/addChannel.png>
 
 ---
 
-(C:\Users\Lenovo ThinkPad\Desktop\4.png)
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/messages.png>
 
 ---
 
-(C:\Users\Lenovo ThinkPad\Desktop\5.png)
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/signUpError.png>
 
 _You can try UX/UI-friendly react app by clicking on the link below!_ 👇🏻
 
