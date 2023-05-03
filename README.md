@@ -29,19 +29,19 @@ _Make sure you have Node.js version 13 or higher installed_
 
 ## Get started
 
-# Clone repository
+### Clone repository
 
 ```bash
 git clone git@github.com:NadyKamenskaya/frontend-project-12.git
 ```
 
-# Install dependencies
+### Install dependencies
 
 ```bash
 make install
 ```
 
-# Start frontend and backend in root folder
+### Start frontend and backend in root folder
 
 ```bash
 make start
@@ -49,7 +49,7 @@ make start
 
 ## Demo
 
-(C:\Users\Lenovo ThinkPad\Desktop\1.png)
+(frontend-project-12/frontend/images/logIn.png)
 
 ---
 
