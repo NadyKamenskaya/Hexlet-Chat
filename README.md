@@ -49,20 +49,20 @@ make start
 
 ## Demo
 
-<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/logIn.png>
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/main/frontend/images/logIn.png>
 
 ---
 
-<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/addChannel.png>
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/main/frontend/images/addChannel.png>
 
 ---
 
-<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/messages.png>
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/main/frontend/images/messages.png>
 
 ---
 
-<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/test_branch/frontend/images/signUpError.png>
+<img src=https://github.com/NadyKamenskaya/frontend-project-12/blob/main/frontend/images/signUpError.png>
 
 _You can try UX/UI-friendly react app by clicking on the link below!_ 👇🏻
 
-[_**Click me**_](https://frontend-project-12-production-1ed0.up.railway.app/)
+[_**Click me**_](https://hexlet-chat-production.up.railway.app/)
