@@ -2,6 +2,8 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
+import { actions as loadingStateActions } from './loadingStateSlice';
+
 const initialState = ({
   isOpen: false,
   type: null,
@@ -20,6 +22,10 @@ const modalSlice = createSlice({
     close: (state) => {
       state.isOpen = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadingStateActions.unload, () => initialState);
   },
 });
 
