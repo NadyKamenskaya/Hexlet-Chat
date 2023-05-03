@@ -1,6 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-param-reassign */
-
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -9,22 +6,26 @@ import { toast } from 'react-toastify';
 
 import { useApi } from '../../../hooks/index.jsx';
 
-import { customSelectors } from '../../../slices/channelsSlice';
+import { selectors } from '../../../slices/modalSlice';
 
 const Remove = ({ handleClose }) => {
   const { t } = useTranslation();
   const api = useApi();
 
-  const currentChannel = useSelector(customSelectors.selectCurrentChannel);
+  const { channelId } = useSelector(selectors.getModalContext);
 
   const onClick = () => {
-    api.removeChannel(currentChannel);
-    toast.success(t('notify.removedChannel'));
+    try {
+      api.removeChannel(channelId);
+      toast.success(t('notify.removedChannel'));
+      handleClose();
+    } catch {
+      toast.error(t('notify.networkError'));
+    }
   };
 
   return (
     <>
-      {/* <Modal.Dialog className="modal-dialog-centered"> */}
       <Modal.Header closeButton>
         <Modal.Title>{t('ui.removeChannel')}</Modal.Title>
       </Modal.Header>
@@ -46,7 +47,6 @@ const Remove = ({ handleClose }) => {
           </Button>
         </div>
       </Modal.Body>
-      {/* </Modal.Dialog> */}
     </>
   );
 };

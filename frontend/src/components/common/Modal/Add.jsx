@@ -1,10 +1,5 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-param-reassign */
-
 import React, { useEffect, useRef } from 'react';
-import {
-  Button, Modal, Form, ModalFooter,
-} from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -31,7 +26,7 @@ const Add = ({ handleClose }) => {
 
   const inputRef = useRef(null);
 
-  const channelsName = useSelector(customSelectors.selectAllChannels)
+  const channelsName = useSelector(customSelectors.allChannels)
     .reduce((acc, channel) => [...acc, channel.name], []);
 
   useEffect(() => {
@@ -50,55 +45,48 @@ const Add = ({ handleClose }) => {
         api.addChannel(values);
         toast.success(t('notify.createdChannel'));
         handleClose();
-      } catch (err) {
+      } catch (error) {
         formik.setSubmitting(false);
 
-        if (err.isAxiosError && err.response.status === 401) {
+        if (error.isAxiosError && error.response.status === 401) {
           inputRef.current.select();
-          toast.error(t('notify.error'));
 
           return;
         }
-        throw err;
+        toast.error(t('notify.networkError'));
       }
     },
   });
 
   return (
     <>
-      {/* <Modal.Dialog className="modal-dialog-centered"> */}
       <Modal.Header closeButton>
         <Modal.Title>{t('ui.addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
-          noValidate
           onSubmit={formik.handleSubmit}
         >
-          <div>
-            <Form.Group controlId="name">
-              <Form.Control
-                className="mb-2"
-                name="name"
-                required
-                ref={inputRef}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.name}
-                isInvalid={formik.errors.name && formik.touched.name}
-                disabled={formik.isSubmitting}
-              />
-              <Form.Label
-                visuallyHidden
-                htmlFor="name"
-              >
-                {t('ui.nameChannel')}
-              </Form.Label>
-              <Form.Control.Feedback type="invalid">
-                {t(formik.errors.name)}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <ModalFooter
+          <Form.Group controlId="name">
+            <Form.Control
+              className="mb-2"
+              name="name"
+              ref={inputRef}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              isInvalid={formik.errors.name && formik.touched.name}
+              disabled={formik.isSubmitting}
+            />
+            <Form.Label
+              visuallyHidden
+            >
+              {t('ui.nameChannel')}
+            </Form.Label>
+            <Form.Control.Feedback type="invalid">
+              {t(formik.errors.name)}
+            </Form.Control.Feedback>
+            <div
               className="d-flex justify-content-end"
             >
               <Button
@@ -115,11 +103,10 @@ const Add = ({ handleClose }) => {
               >
                 {t('buttons.submit')}
               </Button>
-            </ModalFooter>
-          </div>
+            </div>
+          </Form.Group>
         </Form>
       </Modal.Body>
-      {/* </Modal.Dialog> */}
     </>
   );
 };

@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
-
+import React from 'react';
 import { Modal } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { selectors, actions } from '../../../slices/modalSlice.js';
 
@@ -25,7 +25,7 @@ const ModalRoot = () => {
   const CurrentModal = modals[modalType];
 
   return (
-    <Modal show={isOpen} onHide={handleClose}>
+    <Modal show={isOpen} onHide={handleClose} centered>
       {CurrentModal && <CurrentModal handleClose={handleClose} />}
     </Modal>
   );
