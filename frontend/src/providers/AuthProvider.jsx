@@ -1,8 +1,13 @@
 import { useState, useMemo, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { AuthContext } from '../contexts/index.jsx';
 
+import { actions as loadingStateActions } from '../slices/loadingStateSlice.js';
+
 const AuthProvider = ({ children }) => {
+  const dispatch = useDispatch();
+
   const currentUser = JSON.parse(localStorage.getItem('userId'));
   const [user, setUser] = useState(currentUser);
 
@@ -13,8 +18,9 @@ const AuthProvider = ({ children }) => {
 
   const logOut = useCallback(() => {
     localStorage.removeItem('userId');
+    dispatch(loadingStateActions.unload());
     setUser(null);
-  }, []);
+  }, [dispatch]);
 
   const getAuthHeader = useCallback(() => {
     if (user && user.token) {

@@ -6,10 +6,18 @@ import { apiRoutes } from '../routes/routes.js';
 
 const fetchData = createAsyncThunk(
   'fetchData',
-  async (header) => {
-    const res = await axios.get(apiRoutes.dataPath(), { headers: header });
+  async (header, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(apiRoutes.dataPath(), { headers: header });
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      if (error.isAxiosError) {
+        return rejectWithValue(error.response.status);
+      }
+
+      throw error;
+    }
   },
 );
 

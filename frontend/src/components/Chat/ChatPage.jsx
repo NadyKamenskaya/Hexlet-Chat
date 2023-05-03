@@ -1,139 +1,97 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Container, Row, Col, Button, Form, InputGroup,
-} from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
-import { useFormik } from 'formik';
-
-import { useAuth, useApi } from '../../hooks/index.jsx';
+import { useAuth } from '../../hooks/index.jsx';
 
 import fetchData from '../../slices/fetchData.js';
-import { customSelectors } from '../../slices/channelsSlice.js';
+import { selectors as loadingStateSelectors, stateLoad } from '../../slices/loadingStateSlice.js';
+import { customSelectors as channelsSelectors } from '../../slices/channelsSlice.js';
 import { customSelectors as messagesSelectors } from '../../slices/messagesSlice.js';
-import { actions } from '../../slices/modalSlice.js';
 
-import Modal from '../common/Modal/index.js';
-import Channel from './components/Channel.jsx';
 import Channels from './components/Channels';
 import Messages from './components/Messages.jsx';
+import Modal from '../common/Modal/index.js';
+
+const handleUpdate = (navigate) => () => {
+  navigate(0);
+};
+
+const Loader = () => (
+  <div className="h-100 d-flex justify-content-center align-items-center">
+    <Spinner animation="border" variant="primary" role="status" />
+  </div>
+);
+
+const Error = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  return (
+    <div className="m-auto w-auto text-center">
+      <p>{t('errors.unknown')}</p>
+      <Button onClick={handleUpdate(navigate)}>
+        {t('ui.updatePage')}
+      </Button>
+    </div>
+  );
+};
+
+const Content = () => {
+  const loadingState = useSelector(loadingStateSelectors.getStatus);
+  const channels = useSelector(channelsSelectors.allChannels);
+  const currentChannel = useSelector(channelsSelectors.currentChannel);
+  const currentChannelMessages = useSelector(messagesSelectors.currentChannelMessages);
+
+  switch (loadingState) {
+    case stateLoad.success:
+      return (
+        <>
+          <Channels channels={channels} currentChannelId={currentChannel.id} />
+          <Messages channel={currentChannel} messages={currentChannelMessages} />
+        </>
+      );
+
+    case stateLoad.fail:
+      return <Error />;
+
+    default:
+      return <Loader />;
+  }
+};
 
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const api = useApi();
-  const { getAuthHeader } = useAuth();
-  const inputRef = useRef(null);
-  const channels = useSelector(customSelectors.allChannels);
-  const currentChannel = useSelector(customSelectors.currentChannel);
-  const currentChannelMessages = useSelector(messagesSelectors.selectCurrentChannelMessages);
+  const { getAuthHeader, logOut } = useAuth();
 
   useEffect(() => {
-    inputRef.current.focus();
-    const header = getAuthHeader();
-    dispatch(fetchData(header));
+    dispatch(fetchData(getAuthHeader()));
   }, [dispatch, getAuthHeader]);
 
-  const handleAdd = () => {
-    dispatch(actions.open({ type: 'adding' }));
-  };
+  const loadingState = useSelector(loadingStateSelectors.getStatus);
 
-  const formik = useFormik({
-    initialValues: {
-      body: '',
-    },
-    onSubmit: async (values) => {
-      const { username } = JSON.parse(localStorage.userId);
-      await api.addMessage(values.body, currentChannel, username);
-      inputRef.current.value = '';
-      values.body = '';
-    },
-  });
+  switch (loadingState) {
+    case stateLoad.error:
+      toast.error(t('notify.unauthorized'));
+      logOut();
+      break;
+    case stateLoad.fail:
+      toast.error(t('notify.networkError'));
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="row h-100 flex-md-row bg-white">
-        <Col className="xs={4} md={2} border-end px-0 flex-column h-100 d-flex bg-light">
-          <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-            <b>{t('ui.channels')}</b>
-            <Button
-              className="p-0 text-primary"
-              variant="group-vertical"
-              onClick={handleAdd}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                width="20"
-                height="20"
-                fill="currentColor"
-                style={{ '--darkreader-inline-fill': 'currentColor' }}
-                data-darkreader-inline-fill=""
-              >
-                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-              </svg>
-              <span className="visually-hidden">+</span>
-            </Button>
-          </div>
-          <Channels channels={channels} currentChannelId={currentChannel.id} />
-        </Col>
-        <div className="col p-0 h-100">
-          <div className="d-flex flex-column h-100">
-            <Channel />
-            <div
-              className="chat-messages overflow-auto px-5"
-              id="messages-box"
-            >
-              <Messages channel={currentChannel} messages={currentChannelMessages} />
-            </div>
-            <div className="mt-auto px-5 py-3">
-              <Form
-                noValidate
-                onSubmit={formik.handleSubmit}
-                className="py-1 border rounded-2"
-              >
-                <InputGroup
-                  hasValidation={formik.values.body.length === 0}
-                >
-                  <Form.Control
-                    ref={inputRef}
-                    className="border-0 p-0 ps-2"
-                    onChange={formik.handleChange}
-                    name="body"
-                    aria-label={t('fields.newMessage')}
-                    placeholder={t('fields.inputMessage')}
-                    value={formik.values.body}
-                  />
-                  <Button
-                    variant="group-vertical"
-                    type="submit"
-                    className="border-0"
-                    disabled={formik.values.body.length === 0}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 16"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      style={{ '--darkreader-inline-fill': 'currentColor' }}
-                      data-darkreader-inline-fill=""
-                    >
-                      <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-                    </svg>
-                    <span className="visually-hidden">{t('buttons.submit')}</span>
-                  </Button>
-                </InputGroup>
-              </Form>
-            </div>
-          </div>
-        </div>
+      <Row className="h-100 flex-md-row bg-white">
+        <Content />
       </Row>
       <Modal />
     </Container>
