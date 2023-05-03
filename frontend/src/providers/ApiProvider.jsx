@@ -25,7 +25,9 @@ const ApiProvider = ({ socket, children }) => {
 
   const renameChannel = async (id, name) => {
     await socket.emit('renameChannel', { id, name });
-    dispatch(channelsActions.renameChannel({ id, changes: { name } }));
+    await socket.on('renameChannel', (payload) => {
+      dispatch(channelsActions.renameChannel({ id: payload.id, changes: { name } }));
+    });
   };
 
   const removeChannel = async (id) => {
