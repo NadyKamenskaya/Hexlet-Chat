@@ -18,6 +18,7 @@ const ru = {
       notOneOf: 'Должно быть уникальным',
       rangeLetter: 'От 3 до 20 символов',
       required: 'Обязательное поле',
+      unknown: 'Что-то пошло не так',
     },
     fields: {
       confirmPassword: 'Подтвердите пароль',
@@ -30,13 +31,15 @@ const ru = {
     },
     notify: {
       createdChannel: 'Канал создан',
-      error: 'Ошибка соединения',
+      networkError: 'Ошибка соединения',
       removedChannel: 'Канал удалён',
       renamedChannel: 'Канал переименован',
+      unauthorized: 'Произошла ошибка при загрузке данных',
     },
     ui: {
       addChannel: 'Добавить канал',
       channels: 'Каналы',
+      exist: 'Уже есть аккаунт? ',
       goTo: 'Но вы можете перейти ',
       hexletChat: 'Hexlet Chat',
       mainPage: 'на главную страницу',
@@ -47,6 +50,7 @@ const ru = {
       registration: 'Регистрация',
       removeChannel: 'Удалить канал',
       renameChannel: 'Переименовать канал',
+      updatePage: 'Обновить страницу',
       counter: {
         count_one: '{{count}} сообщение',
         count_few: '{{count}} сообщения',

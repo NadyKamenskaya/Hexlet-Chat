@@ -1,20 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { Col } from 'react-bootstrap';
 
-import { selectors } from '../../../slices/messagesSlice.js';
+import MessagesHeader from './MessagesHeader.jsx';
+import MessagesBody from './MessagesBody.jsx';
+import MessagesForm from './MessagesForm.jsx';
 
-import Message from './Message.jsx';
-
-const Messages = () => {
-  const messages = useSelector(selectors.selectAll);
-
-  return messages && (
-    <>
-      {messages.map((message) => (
-        <Message key={message.id} message={message} />
-      ))}
-    </>
-  );
-};
+const Messages = ({ channel, messages }) => (
+  <Col className="p-0 h-100">
+    <div className="d-flex flex-column h-100">
+      <MessagesHeader channelName={channel.name} messagesAmount={messages.length} />
+      <MessagesBody channelId={channel.id} messages={messages} />
+      <MessagesForm channelId={channel.id} />
+    </div>
+  </Col>
+);
 
 export default Messages;

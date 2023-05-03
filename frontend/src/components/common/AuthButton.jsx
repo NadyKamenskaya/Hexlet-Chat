@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +9,7 @@ const AuthButton = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn
+    auth.user
       ? <Button onClick={auth.logOut} variant="primary">{t('buttons.logOut')}</Button>
       : null
   );

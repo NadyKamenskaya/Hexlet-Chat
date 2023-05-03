@@ -8,7 +8,7 @@ const ChatRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn
+    auth.user
       ? <Outlet />
       : <Navigate to={routes.loginPage} />
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Button, Form, Card, Image, FloatingLabel,
+  Button, Form, Card, Image, FormGroup,
 } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useAuth } from '../../hooks/index.jsx';
-import { apiRoutes } from '../../routes/routes.js';
+import { routes, apiRoutes } from '../../routes/routes.js';
 
 import image from '../../assets/avatar_1.jpg';
 
@@ -33,7 +33,6 @@ const schema = yup.object().shape({
 
 const SignUpPage = () => {
   const { t } = useTranslation();
-  const notify = () => toast.error(t('notify.error'));
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,6 +51,8 @@ const SignUpPage = () => {
       confirmPassword: '',
     },
     validationSchema: schema,
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit: async (values) => {
       setAuthFailed(false);
 
@@ -59,21 +60,19 @@ const SignUpPage = () => {
         const res = await axios.post(apiRoutes.signupPath(), {
           username: values.username, password: values.password,
         });
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        const { from } = location.state || { from: { pathname: '/' } };
+        auth.logIn(res.data);
+        const { from } = location.state || { from: { pathname: routes.chatPage } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
 
         if (err.isAxiosError && err.response.status === 409) {
-          notify();
           setAuthFailed(true);
           inputRef.current.select();
 
           return;
         }
-        throw err;
+        toast.error(t('notify.networkError'));
       }
     },
   });
@@ -94,17 +93,14 @@ const SignUpPage = () => {
                 />
               </div>
               <Form
-                noValidate
                 onSubmit={formik.handleSubmit}
                 className="w-50"
               >
                 <h1 className="text-center mb-4">{t('ui.registration')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
-                  <FloatingLabel
+                  <FormGroup
                     controlId="username"
-                    className="mb-3"
-                    htmlFor="username"
-                    label={t('fields.username')}
+                    className="mb-3 form-floating"
                   >
                     <Form.Control
                       ref={inputRef}
@@ -112,12 +108,12 @@ const SignUpPage = () => {
                       name="username"
                       autoComplete="username"
                       required
-                      id="username"
+                      onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       value={formik.values.username}
                       isInvalid={authFailed || !!formik.errors.username}
-                      isValid={formik.touched.username && !formik.errors.username}
                     />
+                    <Form.Label>{t('fields.username')}</Form.Label>
                     <Form.Control.Feedback
                       type="invalid"
                       tooltip
@@ -125,12 +121,10 @@ const SignUpPage = () => {
                     >
                       {t(formik.errors.username)}
                     </Form.Control.Feedback>
-                  </FloatingLabel>
-                  <FloatingLabel
+                  </FormGroup>
+                  <FormGroup
                     controlId="password"
-                    className="mb-3"
-                    htmlFor="password"
-                    label={t('fields.password')}
+                    className="mb-3 form-floating"
                   >
                     <Form.Control
                       placeholder={t('fields.password')}
@@ -138,45 +132,42 @@ const SignUpPage = () => {
                       type="password"
                       autoComplete="new-password"
                       required
-                      id="password"
                       aria-describedby="passwordHelpBlock"
+                      onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       isInvalid={authFailed || !!formik.errors.password}
-                      isValid={formik.touched.password && !formik.errors.password}
                     />
+                    <Form.Label>{t('fields.password')}</Form.Label>
                     <Form.Control.Feedback
                       type="invalid"
                       tooltip
                     >
                       {t(formik.errors.password)}
                     </Form.Control.Feedback>
-                  </FloatingLabel>
-                  <FloatingLabel
+                  </FormGroup>
+                  <FormGroup
                     controlId="confirmPassword"
-                    className="mb-4"
-                    htmlFor="confirmPassword"
-                    label={t('fields.confirmPassword')}
+                    className="mb-4 form-floating"
                   >
                     <Form.Control
                       placeholder={t('fields.confirmPassword')}
                       name="confirmPassword"
                       autoComplete="new-password"
                       required
-                      id="confirmPassword"
                       type="password"
                       onChange={formik.handleChange}
                       value={formik.values.confirmPassword}
                       isInvalid={authFailed || !!formik.errors.confirmPassword}
-                      isValid={formik.touched.confirmPassword && !formik.errors.confirmPassword}
                     />
+                    <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                     <Form.Control.Feedback
                       type="invalid"
                       tooltip
                     >
                       {t(formik.errors.confirmPassword) || t('errors.alreadyExists')}
                     </Form.Control.Feedback>
-                  </FloatingLabel>
+                  </FormGroup>
                   <Button
                     className="w-100"
                     variant="outline-primary"
@@ -187,6 +178,12 @@ const SignUpPage = () => {
                 </fieldset>
               </Form>
             </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>{t('ui.exist')}</span>
+                <a href={routes.loginPage}>{t('buttons.logIn')}</a>
+              </div>
+            </Card.Footer>
           </Card>
         </div>
       </div>
