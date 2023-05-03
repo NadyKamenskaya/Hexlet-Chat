@@ -22,7 +22,6 @@ const schema = yup.object().shape({
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const notify = () => toast.error(t('notify.error'));
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -48,13 +47,12 @@ const LoginPage = () => {
         formik.setSubmitting(false);
 
         if (err.isAxiosError && err.response.status === 401) {
-          notify();
           setAuthFailed(true);
           inputRef.current.select();
 
           return;
         }
-        throw err;
+        toast.error(t('notify.networkError'));
       }
     },
   });
@@ -77,7 +75,6 @@ const LoginPage = () => {
                 />
               </div>
               <Form
-                noValidate
                 onSubmit={formik.handleSubmit}
                 className="col-12 col-md-6 mt-3 mt-mb-0"
               >
@@ -96,7 +93,6 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       value={formik.values.username}
                       isInvalid={authFailed}
-                      isValid={formik.touched.username && !formik.errors.username}
                     />
                     <Form.Label>{t('fields.nickname')}</Form.Label>
                     <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip={formik.errors.username && formik.touched.username}>
@@ -116,7 +112,6 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       isInvalid={authFailed}
-                      isValid={formik.touched.password && !formik.errors.password}
                     />
                     <Form.Label>
                       {t('fields.password')}
@@ -141,7 +136,7 @@ const LoginPage = () => {
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('ui.noAccount')}</span>
-                <a href="/signup">{t('ui.registration')}</a>
+                <a href={routes.signUpPage}>{t('ui.registration')}</a>
               </div>
             </Card.Footer>
           </Card>
