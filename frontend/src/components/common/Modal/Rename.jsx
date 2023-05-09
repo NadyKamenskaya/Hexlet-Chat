@@ -27,8 +27,7 @@ const Rename = ({ handleClose }) => {
 
   const inputRef = useRef(null);
 
-  const channelsName = useSelector(customSelectors.allChannels)
-    .reduce((acc, channel) => [...acc, channel.name], []);
+  const channelsNames = useSelector(customSelectors.channelsNames);
   const { channelId, channelName } = useSelector(selectors.getModalContext);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const Rename = ({ handleClose }) => {
     initialValues: {
       name: channelName,
     },
-    validationSchema: schema(channelsName),
+    validationSchema: schema(channelsNames),
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
