@@ -19,10 +19,11 @@ const messagesSlice = createSlice({
     builder
       .addCase(channelsActions.removeChannel, (state, action) => {
         const channel = action.payload;
-        const restEntities = Object
+        const channelMessages = Object
           .values(state.entities)
-          .filter((e) => channel.id !== e.channelId);
-        messagesAdapter.setAll(state, restEntities);
+          .filter((e) => channel.id === e.channelId)
+          .map((message) => message.id);
+        messagesAdapter.removeMany(state, channelMessages);
       })
       .addCase(fetchData.fulfilled, (state, { payload }) => {
         messagesAdapter.setAll(state, payload.messages);
