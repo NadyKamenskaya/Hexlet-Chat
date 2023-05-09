@@ -61,7 +61,7 @@ const SignUpPage = () => {
           username: values.username, password: values.password,
         });
         auth.logIn(res.data);
-        const { from } = location.state || { from: { pathname: routes.chatPage } };
+        const { from } = location.state || { from: { pathname: routes.chatPage() } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
@@ -181,7 +181,7 @@ const SignUpPage = () => {
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('ui.exist')}</span>
-                <a href={routes.loginPage}>{t('buttons.logIn')}</a>
+                <a href={routes.loginPage()}>{t('buttons.logIn')}</a>
               </div>
             </Card.Footer>
           </Card>

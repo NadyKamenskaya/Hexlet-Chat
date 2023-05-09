@@ -41,7 +41,7 @@ const LoginPage = () => {
       try {
         const res = await axios.post(apiRoutes.loginPath(), values);
         auth.logIn(res.data);
-        const { from } = location.state || { from: { pathname: routes.chatPage } };
+        const { from } = location.state || { from: { pathname: routes.chatPage() } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
@@ -136,7 +136,7 @@ const LoginPage = () => {
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('ui.noAccount')}</span>
-                <a href={routes.signUpPage}>{t('ui.registration')}</a>
+                <a href={routes.signUpPage()}>{t('ui.registration')}</a>
               </div>
             </Card.Footer>
           </Card>

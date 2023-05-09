@@ -1,10 +1,10 @@
 const apiPath = '/api/v1';
 
 const routes = {
-  chatPage: '/',
-  loginPage: '/login',
-  signUpPage: '/signup',
-  notFoundPage: '*',
+  chatPage: () => '/',
+  loginPage: () => '/login',
+  signUpPage: () => '/signup',
+  notFoundPage: () => '*',
 };
 
 const apiRoutes = {

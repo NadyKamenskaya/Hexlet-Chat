@@ -10,7 +10,7 @@ const ChatRoute = () => {
   return (
     auth.user
       ? <Outlet />
-      : <Navigate to={routes.loginPage} />
+      : <Navigate to={routes.loginPage()} />
   );
 };
 

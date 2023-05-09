@@ -23,13 +23,13 @@ const App = () => (
       <Router>
         <Nav />
         <Routes>
-          <Route path={routes.notFoundPage} element={<NotFoundPage />} />
+          <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
           <Route element={<MainRoute />}>
-            <Route path={routes.loginPage} element={<LoginPage />} />
-            <Route path={routes.signUpPage} element={<SignUpPage />} />
+            <Route path={routes.loginPage()} element={<LoginPage />} />
+            <Route path={routes.signUpPage()} element={<SignUpPage />} />
           </Route>
           <Route element={<ChatRoute />}>
-            <Route path={routes.chatPage} element={<ChatPage />} />
+            <Route path={routes.chatPage()} element={<ChatPage />} />
           </Route>
         </Routes>
       </Router>

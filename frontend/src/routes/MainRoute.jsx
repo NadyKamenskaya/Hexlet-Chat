@@ -9,7 +9,7 @@ const MainRoute = () => {
 
   return (
     auth.user
-      ? <Navigate to={routes.chatPage} />
+      ? <Navigate to={routes.chatPage()} />
       : <Outlet />
   );
 };

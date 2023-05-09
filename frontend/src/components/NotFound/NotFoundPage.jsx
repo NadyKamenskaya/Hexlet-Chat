@@ -18,7 +18,7 @@ const NotFoundPage = () => {
       <h1 className="h4 text-muted">{t('ui.notFoundPage')}</h1>
       <p className="text-muted">
         {t('ui.goTo')}
-        <a href={routes.chatPage}>{t('ui.mainPage')}</a>
+        <a href={routes.chatPage()}>{t('ui.mainPage')}</a>
       </p>
     </div>
   );

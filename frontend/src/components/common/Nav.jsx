@@ -13,7 +13,7 @@ const Nav = () => {
   return (
     <Navbar className="shadow-sm" bg="white" expand="lg">
       <div className="container">
-        <Navbar.Brand as={Link} to={routes.chatPage}>{t('ui.hexletChat')}</Navbar.Brand>
+        <Navbar.Brand as={Link} to={routes.chatPage()}>{t('ui.hexletChat')}</Navbar.Brand>
         <AuthButton />
       </div>
     </Navbar>

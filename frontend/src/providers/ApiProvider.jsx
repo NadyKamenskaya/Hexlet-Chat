@@ -8,33 +8,35 @@ import { actions as messagesActions } from '../slices/messagesSlice.js';
 const ApiProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
 
+  socket.on('newMessage', (message) => {
+    dispatch(messagesActions.addMessage(message));
+  });
+  socket.on('newChannel', (channel) => {
+    dispatch(channelsActions.addChannel(channel));
+  });
+  socket.on('renameChannel', ({ id, name }) => {
+    dispatch(channelsActions.renameChannel({ id, changes: { name } }));
+  });
+  socket.on('removeChannel', ({ id }) => {
+    dispatch(channelsActions.removeChannel(id));
+  });
+
   const addMessage = async (body, channelId, username) => {
     await socket.emit('newMessage', { body, channelId, username });
-    await socket.on('newMessage', (payload) => {
-      dispatch(messagesActions.addMessage(payload));
-    });
   };
 
   const addChannel = async (values) => {
-    await socket.emit('newChannel', values);
-    await socket.on('newChannel', (payload) => {
-      dispatch(channelsActions.addChannel(payload));
-      dispatch(channelsActions.changeChannel(payload.id));
-    });
+    const { data } = await socket.emitWithAck('newChannel', values);
+    dispatch(channelsActions.addChannel(data));
+    dispatch(channelsActions.changeChannel(data.id));
   };
 
   const renameChannel = async (id, name) => {
     await socket.emit('renameChannel', { id, name });
-    await socket.on('renameChannel', (payload) => {
-      dispatch(channelsActions.renameChannel({ id: payload.id, changes: { name } }));
-    });
   };
 
   const removeChannel = async (id) => {
     await socket.emit('removeChannel', { id });
-    await socket.on('removeChannel', (payload) => {
-      dispatch(channelsActions.removeChannel(payload));
-    });
   };
 
   return (
