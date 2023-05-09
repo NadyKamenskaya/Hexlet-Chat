@@ -2,7 +2,6 @@ import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import { io } from 'socket.io-client';
 
 import resources from './locales/index.js';
 
@@ -13,7 +12,7 @@ import ApiProvider from './providers/ApiProvider.jsx';
 
 import App from './components/App.jsx';
 
-const init = async () => {
+const init = async (socket) => {
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     payload: {
@@ -32,8 +31,6 @@ const init = async () => {
       lng: 'ru',
       fallbackLng: 'ru',
     });
-
-  const socket = io();
 
   return (
     <RollbarProvider config={rollbarConfig}>
